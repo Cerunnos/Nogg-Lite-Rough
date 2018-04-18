@@ -1,0 +1,13 @@
+.item.terrain{
+  /* opacity: 0.1; */
+  background-color:black;
+}
+
+.toggle.item{
+  /* background-image: url("./pictures/unitIcon1.jpg"); */
+  background-size: 100%
+}
+
+/* .hover.toggle.item{
+  color:red;
+} */

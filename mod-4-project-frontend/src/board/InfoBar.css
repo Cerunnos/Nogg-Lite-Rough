@@ -1,0 +1,10 @@
+.infobar{
+  position:fixed;
+  right:25px;
+  top:30px;
+  /* border-style:solid; */
+  width:330px;
+  height:600px;
+  background-image: url("../pictures/oldPaper.jpg");
+
+}

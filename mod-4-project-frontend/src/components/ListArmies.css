@@ -1,0 +1,8 @@
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.list.row{
+  background-color:#f2f2f2;
+}
