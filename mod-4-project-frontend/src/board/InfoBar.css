@@ -1,10 +1,11 @@
 .infobar{
   position:fixed;
-  right:25px;
+  right:0.5%;
   top:30px;
   /* border-style:solid; */
-  width:330px;
-  height:600px;
+  /* width:330px; */
+  width:15%;
+  /* height:600px; */
+  height:100%;
   background-image: url("../pictures/oldPaper.jpg");
-
 }

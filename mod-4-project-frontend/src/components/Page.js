@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {Route, Link} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import Navbar from './Navbar'
 import ListArmies from './ListArmies'
 import CreateUnit from './CreateUnit'
 import Board from '../board/Board'
-import Builder from './Builder'
+// import Builder from './Builder'
 import './Page.css'
 
-let cuid = require('cuid')
+// let cuid = require('cuid')
 
 class Page extends Component {
   state={
@@ -16,8 +16,8 @@ class Page extends Component {
     selectedUnits:[],
     currentArmy:"empty",
     currentUnit:"empty",
-    player1Army:[],
-    player2Army:[]
+    // player1Army:[],
+    // player2Army:[]
   }
 
   componentDidMount(){
@@ -67,22 +67,22 @@ class Page extends Component {
     })
   }
 
-  setArmyLists=(unit,e)=>{
-    let army=e.target.value
-    if (army==1){
-      let newState1=this.state.player1Army
-      newState1.push(unit)
-      this.setState({
-        player1Army:newState1
-      })
-    }else if (army==2){
-      let newState2=this.state.player2Army
-      newState2.push(unit)
-      this.setState({
-        player2Army:newState2
-      })
-    }
-  }
+  // setArmyLists=(unit,e)=>{
+  //   let army=e.target.value
+  //   if (army==1){
+  //     let newState1=this.state.player1Army
+  //     newState1.push(unit)
+  //     this.setState({
+  //       player1Army:newState1
+  //     })
+  //   }else if (army==2){
+  //     let newState2=this.state.player2Army
+  //     newState2.push(unit)
+  //     this.setState({
+  //       player2Army:newState2
+  //     })
+  //   }
+  // }
 
   render() {
 
@@ -91,7 +91,7 @@ class Page extends Component {
       <div className="container">
         <Navbar/>
         <div className='row'>
-          <Route exact path="/" render={() => <ListArmies armies={this.state.armies} units={this.state.units} removeUnit={this.removeUnit} reset={this.reset} setArmyLists={this.setArmyLists} player1Army={this.state.player1Army} player2Army={this.state.player2Army}/>}/>
+          <Route exact path="/armies" render={() => <ListArmies armies={this.state.armies} units={this.state.units} removeUnit={this.removeUnit} reset={this.reset}/>}/>
         </div>
         <Route exact path="/createUnit" render={() => <CreateUnit addNewUnit={this.addNewUnit}/>}/>
       </div>

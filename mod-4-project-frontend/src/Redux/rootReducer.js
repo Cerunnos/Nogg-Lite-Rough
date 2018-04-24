@@ -1,13 +1,52 @@
-const rootReducer=(state={example:'HI THERE'},action)=>{
+
+const defaultState = {
+  units:[],
+  currentlySelected:null,
+  player1Army:[],
+  player2Army:[],
+  player1List:[],
+  player2List:[],
+  round:1,
+  activations:0,
+  activationsPerRound:0,
+  playerTurn:1
+}
+
+const rootReducer=(state=defaultState,action)=>{
   switch(action.type){
-    case 'LOG':
-      return action.text
+    case 'ADD_UNITS':
+      return {...state,units:action.units}
+    case 'SET_CURRENTLY_SELECTED':
+      return {...state,currentlySelected:action.unit}
+    case 'SET_ARMY_1':
+      return {...state,player1Army:[...state.player1Army,action.unit]}
+    case 'SET_ARMY_2':
+      return {...state,player2Army:[...state.player2Army,action.unit]}
+    case 'FILTER_ARMY_1':
+      return {...state,player1Army:action.filteredArmy}
+    case 'FILTER_ARMY_2':
+      return {...state,player2Army:action.filteredArmy}
+    case 'ADD_ACTIVATION':
+      return {...state,activations:state.activations+1}
+    case 'SUBTRACT_ACTIVATION':
+      return {...state,activations:state.activations-action.num}
+    case 'NEXT_ROUND':
+      return {...state,round:state.round+1}
+    case 'SET_TOTAL_ACTIVATIONS':
+      return {...state,activationsPerRound:state.activations}
+    case 'RESET_ACTIVATIONS':
+      return {...state,activations:state.activationsPerRound}
+    case 'SWITCH_TURN':
+      return {...state,playerTurn:action.playerNum}
+    case 'REDUCE_TOTAL_ACTIVATIONS':
+      return {...state,activationsPerRound:state.activationsPerRound-1}
+    case 'ADD_TO_PLAYER_1_LIST':
+      return {...state,player1List:[...state.player1List,action.unit]}
+    case 'ADD_TO_PLAYER_2_LIST':
+      return {...state,player2List:[...state.player2List,action.unit]}
     default:
       return state
   }
 }
 
 export default rootReducer
-
-//import {connect} from 'react-redux'
-//export default connect()(*Component*)

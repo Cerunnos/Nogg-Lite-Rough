@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 
 
 import './Builder.css'
@@ -8,11 +9,11 @@ class Builder extends Component {
 
 
   render() {
-    const renderArmy1=this.props.player1Army.map((unit)=>{
-      return <ul>{unit.props.unit.name}</ul>
+    const renderArmy1=this.props.store.player1Army.map((unit)=>{
+      return <ul key={Math.random()}>{unit.name}</ul>
     })
-    const renderArmy2=this.props.player2Army.map((unit)=>{
-      return <ul>{unit.props.unit.name}</ul>
+    const renderArmy2=this.props.store.player2Army.map((unit)=>{
+      return <ul key={Math.random()}>{unit.name}</ul>
     })
 
     return(
@@ -26,4 +27,10 @@ class Builder extends Component {
   }
 }
 
-export default Builder;
+const mapStateToProps=state=>{
+  return {
+    store: state
+  };
+};
+
+export default connect(mapStateToProps)(Builder);

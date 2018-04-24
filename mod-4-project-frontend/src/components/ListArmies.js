@@ -6,6 +6,7 @@ import './ListArmies.css'
 
 class ListArmies extends Component {
     render() {
+      // const counter=0
       const renderArmies=this.props.armies.map((army)=>{
         return <Army army={army} key={army.id} units={this.props.units} removeUnit={this.props.removeUnit} reset={this.props.reset} setArmyLists={this.props.setArmyLists}/>
       })
@@ -14,7 +15,7 @@ class ListArmies extends Component {
         <div className="list row">
           {renderArmies}
         </div>
-        <Builder player1Army={this.props.player1Army} player2Army={this.props.player2Army}/>
+        <Builder/>
       </div>
     )
   }

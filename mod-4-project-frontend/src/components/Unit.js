@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import {addToPlayer1Army,addToPlayer2Army,addToPlayer1List,addToPlayer2List} from '../Redux/actions'
+import {connect} from 'react-redux'
+
 import UnitInfo from './UnitInfo'
 import EditUnit from './EditUnit'
-import {Route, Link} from 'react-router-dom'
+// import {Route, Link} from 'react-router-dom'
 import './Unit.css'
 
 class Unit extends Component {
@@ -41,7 +44,15 @@ class Unit extends Component {
   }
 
   handleAddClick=(e)=>{
-    this.props.setArmyLists(this,e)
+    // this.props.setArmyLists(this,e)
+    if (e.target.value==1){
+      this.props.dispatch(addToPlayer1Army(this.props.unit))
+      this.props.dispatch(addToPlayer1List(this.props.unit))
+    }
+    else if (e.target.value==2){
+      this.props.dispatch(addToPlayer2Army(this.props.unit))
+      this.props.dispatch(addToPlayer2List(this.props.unit))
+    }
   }
 
   showInfo = () => (this.state.clickedInfo ? <UnitInfo currentUnit={this.props.unit}/> : <div></div>)
@@ -64,4 +75,10 @@ class Unit extends Component {
   }
 }
 
-export default Unit;
+const mapStateToProps=state=>{
+  return {
+    store: state
+  };
+};
+
+export default connect(mapStateToProps)(Unit);

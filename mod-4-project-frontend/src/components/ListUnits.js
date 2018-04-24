@@ -8,7 +8,7 @@ class ListUnits extends Component {
       return this.props.army.id===unit.army_id
     })
     const renderUnits=filteredUnits.map((unit)=>{
-      return <Unit unit={unit} removeUnit={this.props.removeUnit} units={this.props.units} reset={this.props.reset} setArmyLists={this.props.setArmyLists}/>
+      return <Unit key={unit.id} unit={unit} removeUnit={this.props.removeUnit} units={this.props.units} reset={this.props.reset} setArmyLists={this.props.setArmyLists}/>
     })
 
     return(

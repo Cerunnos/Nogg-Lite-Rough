@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import {setCurrentlySelected,reduceActivations,reduceTotalActivations} from '../Redux/actions'
+
 import './Piece.css'
 
 import {connect} from 'react-redux'
-import {addLog} from '../Redux/actions'
-import rootReducer from '../Redux/rootReducer'
-import store from '../index'
+// import rootReducer from '../Redux/rootReducer'
+// import store from '../index'
 
 class Piece extends Component {
   state={
@@ -21,12 +22,6 @@ class Piece extends Component {
   }
 
   handleClick=(e)=>{
-    // if(this.state.active===true && this.state.selected===false){
-    //   this.select()
-    // }
-    // else if(this.state.active===true && this.state.selected===true){
-    //   this.deselect()
-    // }
     this.props.handleLogic(this)
   }
 
@@ -34,11 +29,19 @@ class Piece extends Component {
     this.setState({
       active:false,
       selected:false
-    },()=>this.props.setCurrentlySelected(null))
+    },()=>this.props.dispatch(setCurrentlySelected(null)))
+
   }
 
   enable=(piece)=>{
-    if(piece.state.unit){
+    if (piece.name){
+      this.setState({
+        active:true,
+        unit:piece,
+        hp:piece.wounds
+      })
+    }
+    else if(piece.state && piece.state.unit){
       this.setState({
         active:true,
         unit:piece.state.unit,
@@ -57,6 +60,7 @@ class Piece extends Component {
   }
 
   deselect=()=>{
+    this.props.dispatch(setCurrentlySelected(null))
     this.setState({
       selected:false
     })
@@ -65,7 +69,7 @@ class Piece extends Component {
   select=()=>{
     this.setState({
       selected:true
-    },()=>this.props.setCurrentlySelected(this))
+    },()=>this.props.dispatch(setCurrentlySelected(this)))
   }
 
   applyWounds=()=>{
@@ -79,6 +83,8 @@ class Piece extends Component {
   mortalityCheck=()=>{
     if (this.state.hp<=0){
       this.disable()
+      this.props.dispatch(reduceActivations())
+      this.props.dispatch(reduceTotalActivations())
     }
   }
 
@@ -106,85 +112,76 @@ class Piece extends Component {
     },()=>console.log(this.state.activated))
   }
 
-  activeOrNot=()=>{
-    let coordArray=[]
-    const getCoords=this.props.pieceState[0].forEach((unit)=>{
-      coordArray.push(unit.coordinates)
-    })
-    if(coordArray.includes(this.props.coordinates)){
-      this.setState({
-        active:true
-      })
-    }
-  }
-
-  // componentDidMount(){
-  //   this.activeOrNot()
-  // }
-
 //What passes for piece graphics...
   pieceIcon=()=>{
     if(this.state.unit !== null){
       //Longship Mercs
-      if (this.state.active && this.state.selected && this.state.unit.name=="Longship Mercs" && this.state.armyNumber===1){
+      if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
         return <div className="selected"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Longship Mercs" && this.state.armyNumber===1){
+      }else if(this.state.active && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
         return <div className="army1"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
-      }else if (this.state.active && this.state.selected && this.state.unit.name=="Longship Mercs"){
+      }else if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs"){
         return <div className="selected"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Longship Mercs"){
+      }else if(this.state.active && this.state.unit.name==="Longship Mercs"){
         return <div className="army2"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }
       //Magus
-      else if(this.state.active && this.state.selected && this.state.unit.name=="Magus" && this.state.armyNumber===1){
+      else if(this.state.active && this.state.selected && this.state.unit.name==="Magus" && this.state.armyNumber===1){
         return <div className="selected"><img src={require("../pictures/tome.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Magus" && this.state.armyNumber===1){
+      }else if(this.state.active && this.state.unit.name==="Magus" && this.state.armyNumber===1){
         return <div className="army1"><img src={require("../pictures/tome.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.selected && this.state.unit.name=="Magus"){
+      }else if(this.state.active && this.state.selected && this.state.unit.name==="Magus"){
         return <div className="selected"><img src={require("../pictures/tome.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Magus"){
+      }else if(this.state.active && this.state.unit.name==="Magus"){
         return <div className="army2"><img src={require("../pictures/tome.png")} alt="ship" width="30" height="30"/></div>
       }
       //Aspirant
-      else if(this.state.active && this.state.selected && this.state.unit.name=="Aspirant" && this.state.armyNumber===1){
+      else if(this.state.active && this.state.selected && this.state.unit.name==="Aspirant" && this.state.armyNumber===1){
         return <div className="selected"><img src={require("../pictures/pentagram.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Aspirant" && this.state.armyNumber===1){
+      }else if(this.state.active && this.state.unit.name==="Aspirant" && this.state.armyNumber===1){
         return <div className="army1"><img src={require("../pictures/pentagram.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.selected && this.state.unit.name=="Aspirant"){
+      }else if(this.state.active && this.state.selected && this.state.unit.name==="Aspirant"){
         return <div className="selected"><img src={require("../pictures/pentagram.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Aspirant"){
+      }else if(this.state.active && this.state.unit.name==="Aspirant"){
         return <div className="army2"><img src={require("../pictures/pentagram.png")} alt="ship" width="30" height="30"/></div>
       }
         //Hvraskr
-      else if(this.state.active && this.state.selected && this.state.unit.name=="Hvraskr" && this.state.armyNumber===1){
+      else if(this.state.active && this.state.selected && this.state.unit.name==="Hvraskr" && this.state.armyNumber===1){
         return <div className="selected"><img src={require("../pictures/goatSkull.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Hvraskr" && this.state.armyNumber===1){
+      }else if(this.state.active && this.state.unit.name==="Hvraskr" && this.state.armyNumber===1){
         return <div className="army1"><img src={require("../pictures/goatSkull.png")} alt="ship" width="30" height="30" /></div>
-      }else if(this.state.active && this.state.selected && this.state.unit.name=="Hvraskr"){
+      }else if(this.state.active && this.state.selected && this.state.unit.name==="Hvraskr"){
         return <div className="selected"><img src={require("../pictures/goatSkull.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Hvraskr"){
+      }else if(this.state.active && this.state.unit.name==="Hvraskr"){
         return <div className="army2"><img src={require("../pictures/goatSkull.png")} alt="ship" width="30" height="30" /></div>
       }
       //Companion
-      else if(this.state.active && this.state.selected && this.state.unit.name=="Companion" && this.state.armyNumber===1){
+      else if(this.state.active && this.state.selected && this.state.unit.name==="Companion" && this.state.armyNumber===1){
         return <div className="selected"><img src={require("../pictures/companion.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Companion" && this.state.armyNumber===1){
+      }else if(this.state.active && this.state.unit.name==="Companion" && this.state.armyNumber===1){
         return <div className="army1"><img src={require("../pictures/companion.png")} alt="ship" width="30" height="30" /></div>
-      }else if(this.state.active && this.state.selected && this.state.unit.name=="Companion"){
+      }else if(this.state.active && this.state.selected && this.state.unit.name==="Companion"){
         return <div className="selected"><img src={require("../pictures/companion.png")} alt="ship" width="30" height="30"/></div>
-      }else if(this.state.active && this.state.unit.name=="Companion"){
+      }else if(this.state.active && this.state.unit.name==="Companion"){
         return <div className="army2"><img src={require("../pictures/companion.png")} alt="ship" width="30" height="30" /></div>
       }
         //Empty
       else{
-        return "0"
+        return ""
       }
     }else{
-      return "0"
+      return ""
     }
   }
 
   render() {
+    // console.log(this.props.store.activationsPerRound,this.props.store.activations)
+    if (this.props.store.activations<=0 && (this.state.attackPhase===0 || this.state.movementPhase===0)){
+      this.setState({
+        movementPhase:1,
+        attackPhase:1
+      })
+    }
     return (
       <div className="piece" id={this.props.coordinates} onClick={this.handleClick}>
       {this.pieceIcon()}
@@ -195,7 +192,7 @@ class Piece extends Component {
 
 const mapStateToProps=state=>{
   return {
-    units:state
+    store:state
   };
 };
 

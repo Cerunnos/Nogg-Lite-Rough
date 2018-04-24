@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ListUnits from './ListUnits'
 import './Army.css'
 
-let cuid = require('cuid')
+// let cuid = require('cuid')
 
 
 class Army extends Component {
