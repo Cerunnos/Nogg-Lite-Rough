@@ -15,6 +15,7 @@ class EditUnit extends Component {
     armor:"",
     wounds:"",
     leadership:"",
+    points:"",
     army_id:""
   }
 
@@ -33,6 +34,7 @@ class EditUnit extends Component {
       armor:parseInt(this.state.armor,10),
       wounds:parseInt(this.state.wounds,10),
       leadership:parseInt(this.state.leadership,10),
+      points:parseInt(this.state.points,10),
       army_id:parseInt(this.state.army_id,10)
     }
 
@@ -64,6 +66,7 @@ class EditUnit extends Component {
       armor:"",
       wounds:"",
       leadership:"",
+      points:"",
       army_id:""
     })
     this.props.history.push('/')
@@ -112,6 +115,9 @@ class EditUnit extends Component {
 
         Leadership:<br/>
         <input value={this.state.leadership} type="text" name="leadership"  autoComplete="off" onChange={this.handleChange}/><br/>
+
+        Points:<br/>
+        <input value={this.state.points} type="text" name="points"  autoComplete="off" onChange={this.handleChange}/><br/>
 
         Army Id:<br/>
         <input value={this.state.army_id} type="text" name="army_id" autoComplete="off" onChange={this.handleChange}/><br/>

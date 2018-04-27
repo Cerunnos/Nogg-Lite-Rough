@@ -12,5 +12,17 @@ li{
 .navbar{
   border-style:solid;
   border-color:silver;
-
+  background-color:lightgrey;
 }
+
+/* .menu::after {
+  content: "";
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: maroon;
+  z-index: -1;
+} */

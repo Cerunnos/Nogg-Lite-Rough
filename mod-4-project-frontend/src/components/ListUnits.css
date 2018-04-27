@@ -1,3 +1,29 @@
 .units{
-  background-color:silver;
+  /* background-color:silver; */
+  background-image: url("../pictures/oldPaper2.jpg");
+  
 }
+
+/* .units::after{
+  content: "";
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: silver;
+  z-index: -1;
+} */
+
+/* .menu::after {
+  content: "";
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: maroon;
+  z-index: -1;
+} */

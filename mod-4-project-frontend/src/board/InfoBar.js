@@ -9,15 +9,11 @@ class InfoBar extends Component {
     this.props.handleEndActivation()
   }
 
-  handleKeyDown=(e)=>{
-    if (e.keyCode==32){
-     console.log(e.target)
-    }
-  }
-
-  handleEndRound=()=>{
-
-  }
+  // handleKeyDown=(e)=>{
+  //   if (e.keyCode==32){
+  //    console.log(e.target)
+  //   }
+  // }
 
   render() {
     // let info=this.props.units
@@ -35,12 +31,14 @@ class InfoBar extends Component {
       // activated=this.props.currentlySelected.state.activated
       // statline=<p>M: {currentUnit.movement} BS: {currentUnit.bs} AS: {currentUnit.as} WP: {currentUnit.willpower} AR:{currentUnit.armor}  W: {currentUnit.wounds} LS: {currentUnit.leadership}</p>
     // }
+
     return (
       <div className="infobar" onKeyDown={this.handleKeyDown}>
       <h1>Player Turn:{this.props.playerTurn}</h1>
       <h2>Remaining Activations:{this.props.store.activations}</h2>
       <h2>Round:{this.props.store.round}</h2>
       <button onClick={this.handleButtonClick}>End Activation</button><br/>
+      {this.props.store.player1List.length===0 || this.props.store.player2List.length===0 ? <h1>Game Over</h1> : null}
       </div>
     );
   }

@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import {setCurrentlySelected,reduceActivations,reduceTotalActivations} from '../Redux/actions'
+import {setCurrentlySelected,thunkTest,reduceTotalActivations,removeFromPlayer2List,removeFromPlayer1List} from '../Redux/actions'
 
 import './Piece.css'
 
 import {connect} from 'react-redux'
-// import rootReducer from '../Redux/rootReducer'
-// import store from '../index'
+import movement from '../movement'
 
 class Piece extends Component {
   state={
     active:false,
     selected:false,
     unit:null,
-    counter:0, //initial set
     hp:0,
     armyNumber:0,
     movementPhase:1,
@@ -28,8 +26,9 @@ class Piece extends Component {
   disable=()=>{
     this.setState({
       active:false,
-      selected:false
-    },()=>this.props.dispatch(setCurrentlySelected(null)))
+      selected:false,
+      unit:null
+    })
 
   }
 
@@ -67,9 +66,10 @@ class Piece extends Component {
   }
 
   select=()=>{
+    this.props.dispatch(setCurrentlySelected(this))
     this.setState({
       selected:true
-    },()=>this.props.dispatch(setCurrentlySelected(this)))
+    })
   }
 
   applyWounds=()=>{
@@ -83,8 +83,38 @@ class Piece extends Component {
   mortalityCheck=()=>{
     if (this.state.hp<=0){
       this.disable()
-      this.props.dispatch(reduceActivations())
+      // this.props.dispatch(reduceActivations())
       this.props.dispatch(reduceTotalActivations())
+      if (this.state.activated===false){
+        this.props.dispatch(thunkTest()).then(console.log(this.props.store.activations))
+      }
+      if (this.state.armyNumber===1){
+        let counter=0
+        let filteredList=[]
+        let filterName=this.props.store.player1List[0].name
+        this.props.store.player1List.map((unit)=>{
+          if (unit.name===filterName && counter==0){
+            counter++
+          }else{
+            filteredList.push(unit)
+          }
+        })
+        this.props.dispatch(removeFromPlayer1List(filteredList))
+
+      }
+      else if (this.state.armyNumber===2){
+        let counter=0
+        let filteredList=[]
+        let filterName=this.props.store.player2List[0].name
+        this.props.store.player2List.map((unit)=>{
+          if (unit.name===filterName && counter==0){
+            counter++
+          }else{
+            filteredList.push(unit)
+          }
+        })
+        this.props.dispatch(removeFromPlayer2List(filteredList))
+      }
     }
   }
 
@@ -109,11 +139,37 @@ class Piece extends Component {
   activated=()=>{
     this.setState({
       activated:true
-    },()=>console.log(this.state.activated))
+    })
   }
 
 //What passes for piece graphics...
   pieceIcon=()=>{
+    if (this.state.unit===null){
+      if (this.props.store.currentlySelected && this.props.store.currentlySelected.state.movementPhase===1){
+        let selectedCoordinates=this.props.store.currentlySelected.props.coordinates
+        let coordArray=selectedCoordinates.split(",")
+        let parsedArray=coordArray.map((element)=>{
+          return parseInt(element,10)
+        })
+        let sX=parsedArray[0]
+        let sY=parsedArray[1]
+
+        let selfCoordArray=this.props.coordinates.split(",")
+        let selfParsedArray=selfCoordArray.map((element)=>{
+          return parseInt(element,10)
+        })
+        let x=selfParsedArray[0]
+        let y=selfParsedArray[1]
+        let unitMovement=''
+        if (this.props.store.currentlySelected.state.unit)
+        unitMovement=this.props.store.currentlySelected.state.unit.movement
+        if (movement(unitMovement,x,y,sX,sY)){
+          return <div className="highlighted"></div>
+        }
+
+        // console.log(this.props.coordinates)
+      }
+    }
     if(this.state.unit !== null){
       //Longship Mercs
       if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
@@ -175,11 +231,12 @@ class Piece extends Component {
   }
 
   render() {
-    // console.log(this.props.store.activationsPerRound,this.props.store.activations)
+    // console.log(this.props.store)
     if (this.props.store.activations<=0 && (this.state.attackPhase===0 || this.state.movementPhase===0)){
       this.setState({
         movementPhase:1,
-        attackPhase:1
+        attackPhase:1,
+        activated:false
       })
     }
     return (

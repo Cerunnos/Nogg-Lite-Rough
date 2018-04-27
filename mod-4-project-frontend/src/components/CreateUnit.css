@@ -1,8 +1,11 @@
 .form{
   position:absolute;
-  top:50px;
+  top:6%;
+  left:45%;
+  width:10%;
   /* left:550px; */
-  background-color:#cccccc;
+  /* background-color:#cccccc; */
+  background-image: url("../pictures/oldPaper2.jpg");
   padding:10px;
 }
 
@@ -14,4 +17,13 @@
 .small{
   width:20px;
   display:inline;
+}
+
+.formContainer{
+  position:fixed;
+  background-image: url("../pictures/oldPaper2.jpg");
+  height:100%;
+  width:100%;
+  background-repeat:no-repeat;;
+  background-size:100%;
 }

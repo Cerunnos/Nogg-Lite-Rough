@@ -11,7 +11,7 @@ class ListArmies extends Component {
         return <Army army={army} key={army.id} units={this.props.units} removeUnit={this.props.removeUnit} reset={this.props.reset} setArmyLists={this.props.setArmyLists}/>
       })
     return(
-      <div>
+      <div className="armiesContainer">
         <div className="list row">
           {renderArmies}
         </div>

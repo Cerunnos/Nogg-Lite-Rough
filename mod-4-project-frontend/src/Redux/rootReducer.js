@@ -1,11 +1,15 @@
 
 const defaultState = {
   units:[],
+  builds:[],
+  buildList:[],
   currentlySelected:null,
   player1Army:[],
   player2Army:[],
   player1List:[],
   player2List:[],
+  player1Pieces:[],
+  player2Pieces:[],
   round:1,
   activations:0,
   activationsPerRound:0,
@@ -16,6 +20,8 @@ const rootReducer=(state=defaultState,action)=>{
   switch(action.type){
     case 'ADD_UNITS':
       return {...state,units:action.units}
+    case 'ADD_BUILDS':
+      return {...state,builds:action.builds}
     case 'SET_CURRENTLY_SELECTED':
       return {...state,currentlySelected:action.unit}
     case 'SET_ARMY_1':
@@ -44,6 +50,22 @@ const rootReducer=(state=defaultState,action)=>{
       return {...state,player1List:[...state.player1List,action.unit]}
     case 'ADD_TO_PLAYER_2_LIST':
       return {...state,player2List:[...state.player2List,action.unit]}
+    case 'REMOVE_FROM_PLAYER_1_LIST':
+      return {...state,player1List:action.filteredList}
+    case 'REMOVE_FROM_PLAYER_2_LIST':
+      return {...state,player2List:action.filteredList}
+    case 'ADD_TO_BUILD_LIST':
+      return {...state,buildList:[...state.buildList,action.unit]}
+    case 'CLEAR_BUILD_LIST':
+      return {...state,buildList:[]}
+    case 'SET_PLAYER_1_PIECES':
+      return {...state,player1Pieces:[...state.player1Pieces,action.unit]}
+    case 'SET_PLAYER_2_PIECES':
+      return {...state,player2Pieces:[...state.player2Pieces,action.unit]}
+    case 'SET_NEW_PIECES_1':
+      return {...state,player1Pieces:action.list}
+    case 'SET_NEW_PIECES_2':
+      return {...state,player2Pieces:action.list}
     default:
       return state
   }

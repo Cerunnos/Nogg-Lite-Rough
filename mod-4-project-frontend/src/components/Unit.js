@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {addToPlayer1Army,addToPlayer2Army,addToPlayer1List,addToPlayer2List} from '../Redux/actions'
+import {addToPlayer1Army,addToPlayer2Army,addToPlayer1List,addToPlayer2List,addToBuildList} from '../Redux/actions'
 import {connect} from 'react-redux'
 
 import UnitInfo from './UnitInfo'
@@ -44,14 +44,16 @@ class Unit extends Component {
   }
 
   handleAddClick=(e)=>{
-    // this.props.setArmyLists(this,e)
+    console.log(this.props.store.buildList)
     if (e.target.value==1){
-      this.props.dispatch(addToPlayer1Army(this.props.unit))
-      this.props.dispatch(addToPlayer1List(this.props.unit))
+      // this.props.dispatch(addToPlayer1Army(this.props.unit))
+      // this.props.dispatch(addToPlayer1List(this.props.unit))
+      this.props.dispatch(addToBuildList(this.props.unit))
     }
     else if (e.target.value==2){
-      this.props.dispatch(addToPlayer2Army(this.props.unit))
-      this.props.dispatch(addToPlayer2List(this.props.unit))
+      // this.props.dispatch(addToPlayer2Army(this.props.unit))
+      // this.props.dispatch(addToPlayer2List(this.props.unit))
+      this.props.dispatch(addToBuildList(this.props.unit))
     }
   }
 
@@ -66,8 +68,7 @@ class Unit extends Component {
         </p>
         <button onClick={this.handleEditClick}>Edit Unit</button>
         <button id={this.props.unit.id} onClick={this.deleteUnit}>Delete Unit</button><br/>
-        <button onClick={this.handleAddClick} value="1">Add To Army 1</button><br/>
-        <button onClick={this.handleAddClick} value="2">Add To Army 2</button>
+        <button onClick={this.handleAddClick} value="1">Add To Build 1</button><br/>
         {this.showInfo()}
         {this.showEdit()}
       </div>

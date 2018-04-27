@@ -14,6 +14,15 @@ export const SWITCH_TURN='SWITCH_TURN'
 export const REDUCE_TOTAL_ACTIVATIONS='REDUCE_TOTAL_ACTIVATIONS'
 export const ADD_TO_PLAYER_1_LIST = 'ADD_TO_PLAYER_1_LIST'
 export const ADD_TO_PLAYER_2_LIST = 'ADD_TO_PLAYER_2_LIST'
+export const REMOVE_FROM_PLAYER_1_LIST = 'REMOVE_FROM_PLAYER_1_LIST'
+export const REMOVE_FROM_PLAYER_2_LIST = 'REMOVE_FROM_PLAYER_2_LIST'
+export const ADD_TO_BUILD_LIST = 'ADD_TO_BUILD_LIST'
+export const ADD_BUILDS = 'ADD_BUILDS'
+export const CLEAR_BUILD_LIST = 'CLEAR_BUILD_LIST'
+export const SET_PLAYER_1_PIECES = 'SET_PLAYER_1_PIECES'
+export const SET_PLAYER_2_PIECES = 'SET_PLAYER_2_PIECES'
+export const SET_NEW_PIECES_1 = 'SET_NEW_PIECES_1'
+export const SET_NEW_PIECES_2 = 'SET_NEW_PIECES_2'
 
 export function addUnits(units){
   return {type: ADD_UNITS, units}
@@ -25,6 +34,18 @@ export function fetchUnitData(url){
       .then(res=>res.json())
       .then(json=>dispatch(addUnits(json)))
   }
+}
+
+export function fetchBuildData(url){
+  return(dispatch)=>{
+    fetch(url)
+      .then(res=>res.json())
+      .then(json=>dispatch(addBuilds(json)))
+  }
+}
+
+export function addBuilds(builds){
+  return {type:ADD_BUILDS,builds}
 }
 
 export function setCurrentlySelected(unit){
@@ -88,4 +109,36 @@ export function addToPlayer1List(unit){
 
 export function addToPlayer2List(unit){
   return {type:ADD_TO_PLAYER_2_LIST,unit}
+}
+
+export function removeFromPlayer1List(filteredList){
+  return {type:REMOVE_FROM_PLAYER_1_LIST,filteredList}
+}
+
+export function removeFromPlayer2List(filteredList){
+  return {type:REMOVE_FROM_PLAYER_2_LIST,filteredList}
+}
+
+export function addToBuildList(unit){
+  return {type:ADD_TO_BUILD_LIST,unit}
+}
+
+export function clearBuildList(){
+  return {type:CLEAR_BUILD_LIST}
+}
+
+export function setPlayer1Pieces(unit){
+  return {type:SET_PLAYER_1_PIECES,unit}
+}
+
+export function setPlayer2Pieces(unit){
+  return {type:SET_PLAYER_2_PIECES,unit}
+}
+
+export function setNewPieces1(list){
+  return {type:SET_NEW_PIECES_1,list}
+}
+
+export function setNewPieces2(list){
+  return {type:SET_NEW_PIECES_2,list}
 }

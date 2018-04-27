@@ -1,0 +1,37 @@
+.menu{
+  position:fixed;
+  left:40%;
+  width:20%;
+  height:100%;
+  text-align:center;
+  border-style:solid;
+  border-color:brown;
+}
+
+.menu::after {
+  content: "";
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: silver;
+  z-index: -1;
+}
+
+.menuContent{
+  position:fixed;
+  top:20%;
+}
+
+.menuItem{
+  width:112.5%;
+  border-style:solid;
+  border-color:gold;
+  background-color:lightblue;
+}
+
+.menuTitle{
+  border-style:solid;
+}

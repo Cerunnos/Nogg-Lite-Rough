@@ -3,10 +3,11 @@ import Row from './Row'
 import InfoBar from './InfoBar'
 import BottomBar from './BottomBar'
 import './Board.css'
+import movement from '../movement'
 
 import {connect} from 'react-redux'
 import {
-  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn
+  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2
 } from '../Redux/actions'
 
 class Board extends Component {
@@ -71,7 +72,6 @@ class Board extends Component {
         filteredList.push(unit)
       }
     })
-    console.log(filteredList)
     this.props.dispatch(filterArmy2(filteredList))
     this.props.dispatch(tallyActivations())
     this.props.dispatch(setTotalActivations())
@@ -120,6 +120,7 @@ class Board extends Component {
 
     //Setup Pieces
     if (this.state.currPiece===null && this.props.store.player1Army.length>0){
+      this.props.dispatch(setPlayer1Pieces(nextPiece))
       this.setState({
         currPiece:nextPiece
       },()=>
@@ -131,6 +132,7 @@ class Board extends Component {
       )
     }
     else if(this.state.currPiece===null && this.props.store.player2Army.length>0){
+      this.props.dispatch(setPlayer2Pieces(nextPiece))
       this.setState({
         currPiece:nextPiece
       },()=>
@@ -151,240 +153,47 @@ class Board extends Component {
       cY=parseInt(cSplit[1],10)
       // cNum=[cX,cY]
 
-  //8 moves
-      let moves1=(
-        (nX===cX+1 && nY===cY+1) ||
-        (nX===cX+1 && nY===cY-1) ||
-        (nX===cX-1 && nY===cY+1) ||
-        (nX===cX-1 && nY===cY-1) ||
-        (nX===cX+1 && nY===cY) ||
-        (nX===cX-1 && nY===cY) ||
-        (nX===cX && nY===cY+1) ||
-        (nX===cX && nY===cY-1)
-      )
-  //16 moves
-      let moves2=(
-        (nX===cX+2 && nY===cY+2) ||
-        (nX===cX+2 && nY===cY+1) ||
-        (nX===cX+2 && nY===cY) ||
-        (nX===cX+2 && nY===cY-1) ||
-        (nX===cX+2 && nY===cY-2) ||
-        (nX===cX+1 && nY===cY+2) ||
-        (nX===cX && nY===cY+2) ||
-        (nX===cX-1 && nY===cY+2) ||
-
-        (nX===cX-2 && nY===cY+2) ||
-        (nX===cX-2 && nY===cY-2) ||
-        (nX===cX && nY===cY-2) ||
-        (nX===cX-2 && nY===cY) ||
-        (nX===cX-1 && nY===cY-2) ||
-        (nX===cX-2 && nY===cY-1) ||
-        (nX===cX-2 && nY===cY+1) ||
-        (nX===cX+1 && nY===cY-2)
-      )
-  //24 moves
-      let moves3=(
-        (nX===cX+3 && nY===cY+3) ||
-        (nX===cX+3 && nY===cY+2) ||
-        (nX===cX+3 && nY===cY+1) ||
-        (nX===cX+3 && nY===cY) ||
-        (nX===cX+2 && nY===cY+3) ||
-        (nX===cX+1 && nY===cY+3) ||
-        (nX===cX && nY===cY+3) ||
-        (nX===cX-3 && nY===cY-3) ||
-
-        (nX===cX-3 && nY===cY-2) ||
-        (nX===cX-3 && nY===cY-1) ||
-        (nX===cX-3 && nY===cY) ||
-        (nX===cX-2 && nY===cY-3) ||
-        (nX===cX-1 && nY===cY-3) ||
-        (nX===cX && nY===cY-3) ||
-        (nX===cX && nY===cY) ||
-        (nX===cX+3 && nY===cY-1) ||
-
-        (nX===cX+3 && nY===cY-2) ||
-        (nX===cX+3 && nY===cY-3) ||
-        (nX===cX+2 && nY===cY-3) ||
-        (nX===cX+1 && nY===cY-3) ||
-        (nX===cX-3 && nY===cY+1) ||
-        (nX===cX-3 && nY===cY+2) ||
-        (nX===cX-3 && nY===cY+3) ||
-        (nX===cX-1 && nY===cY+3)
-      )
-  //32 moves
-      let moves4=(
-        (nX===cX+4 && nY===cY+4) ||
-        (nX===cX+4 && nY===cY+3) ||
-        (nX===cX+4 && nY===cY+2) ||
-        (nX===cX+4 && nY===cY+1) ||
-        (nX===cX+4 && nY===cY) ||
-        (nX===cX+4 && nY===cY-1) ||
-        (nX===cX+4 && nY===cY-2) ||
-        (nX===cX+4 && nY===cY-3) ||
-
-        (nX===cX+4 && nY===cY-4) ||
-        (nX===cX+3 && nY===cY-4) ||
-        (nX===cX+2 && nY===cY-4) ||
-        (nX===cX+1 && nY===cY-4) ||
-        (nX===cX && nY===cY-4) ||
-        (nX===cX-1 && nY===cY-4) ||
-        (nX===cX-2 && nY===cY-4) ||
-        (nX===cX-3 && nY===cY-4) ||
-
-        (nX===cX-4 && nY===cY-4) ||
-        (nX===cX-4 && nY===cY-3) ||
-        (nX===cX-4 && nY===cY-2) ||
-        (nX===cX-4 && nY===cY-1) ||
-        (nX===cX-4 && nY===cY) ||
-        (nX===cX-4 && nY===cY+1) ||
-        (nX===cX-4 && nY===cY+2) ||
-        (nX===cX-4 && nY===cY+3) ||
-
-        (nX===cX-4 && nY===cY+4) ||
-        (nX===cX-3 && nY===cY+4) ||
-        (nX===cX-2 && nY===cY+4) ||
-        (nX===cX-1 && nY===cY+4) ||
-        (nX===cX && nY===cY+4) ||
-        (nX===cX+1 && nY===cY+4) ||
-        (nX===cX+2 && nY===cY+4) ||
-        (nX===cX+3 && nY===cY+4)
-      )
-  //40 moves
-      let moves5=(
-        (nX===cX+5 && nY===cY+5) ||
-        (nX===cX+5 && nY===cY+4) ||
-        (nX===cX+5 && nY===cY+3) ||
-        (nX===cX+5 && nY===cY+2) ||
-        (nX===cX+5 && nY===cY+1) ||
-        (nX===cX+5 && nY===cY) ||
-        (nX===cX+5 && nY===cY-1) ||
-        (nX===cX+5 && nY===cY-2) ||
-
-        (nX===cX+5 && nY===cY-3) ||
-        (nX===cX+5 && nY===cY-4) ||
-        (nX===cX+5 && nY===cY-5) ||
-        (nX===cX+4 && nY===cY-5) ||
-        (nX===cX+3 && nY===cY-5) ||
-        (nX===cX+2 && nY===cY-5) ||
-        (nX===cX+1 && nY===cY-5) ||
-        (nX===cX && nY===cY-5) ||
-
-        (nX===cX-1 && nY===cY-5) ||
-        (nX===cX-2 && nY===cY-5) ||
-        (nX===cX-3 && nY===cY-5) ||
-        (nX===cX-4 && nY===cY-5) ||
-        (nX===cX-5 && nY===cY-5) ||
-        (nX===cX-5 && nY===cY-4) ||
-        (nX===cX-5 && nY===cY-3) ||
-        (nX===cX-5 && nY===cY-2) ||
-
-        (nX===cX-5 && nY===cY-1) ||
-        (nX===cX-5 && nY===cY) ||
-        (nX===cX-5 && nY===cY+1) ||
-        (nX===cX-5 && nY===cY+2) ||
-        (nX===cX-5 && nY===cY+3) ||
-        (nX===cX-5 && nY===cY+4) ||
-        (nX===cX-5 && nY===cY+5) ||
-        (nX===cX-4 && nY===cY+5) ||
-
-        (nX===cX-3 && nY===cY+5) ||
-        (nX===cX-2 && nY===cY+5) ||
-        (nX===cX-1 && nY===cY+5) ||
-        (nX===cX && nY===cY+5) ||
-        (nX===cX+1 && nY===cY+5) ||
-        (nX===cX+2 && nY===cY+5) ||
-        (nX===cX+3 && nY===cY+5) ||
-        (nX===cX+4 && nY===cY+5)
-
-      )
-  //48 moves
-      let moves6=(
-        (nX===cX+6 && nY===cY+6) ||
-        (nX===cX+6 && nY===cY+5) ||
-        (nX===cX+6 && nY===cY+4) ||
-        (nX===cX+6 && nY===cY+3) ||
-        (nX===cX+6 && nY===cY+2) ||
-        (nX===cX+6 && nY===cY+1) ||
-        (nX===cX+6 && nY===cY) ||
-        (nX===cX+6 && nY===cY-1) ||
-
-        (nX===cX+6 && nY===cY-2) ||
-        (nX===cX+6 && nY===cY-3) ||
-        (nX===cX+6 && nY===cY-4) ||
-        (nX===cX+6 && nY===cY-5) ||
-        (nX===cX+6 && nY===cY-6) ||
-        (nX===cX+5 && nY===cY-6) ||
-        (nX===cX+4 && nY===cY-6) ||
-        (nX===cX+3 && nY===cY-6) ||
-
-        (nX===cX+2 && nY===cY-6) ||
-        (nX===cX+1 && nY===cY-6) ||
-        (nX===cX && nY===cY-6) ||
-        (nX===cX-1 && nY===cY-6) ||
-        (nX===cX-2 && nY===cY-6) ||
-        (nX===cX-3 && nY===cY-6) ||
-        (nX===cX-4 && nY===cY-6) ||
-        (nX===cX-5 && nY===cY-6) ||
-
-        (nX===cX-6 && nY===cY-6) ||
-        (nX===cX-6 && nY===cY-5) ||
-        (nX===cX-6 && nY===cY-4) ||
-        (nX===cX-6 && nY===cY-3) ||
-        (nX===cX-6 && nY===cY-2) ||
-        (nX===cX-6 && nY===cY-1) ||
-        (nX===cX-6 && nY===cY) ||
-        (nX===cX-6 && nY===cY+1) ||
-
-        (nX===cX-6 && nY===cY+2) ||
-        (nX===cX-6 && nY===cY+3) ||
-        (nX===cX-6 && nY===cY+4) ||
-        (nX===cX-6 && nY===cY+5) ||
-        (nX===cX-6 && nY===cY+6) ||
-        (nX===cX-5 && nY===cY+6) ||
-        (nX===cX-4 && nY===cY+6) ||
-        (nX===cX-3 && nY===cY+6) ||
-
-        (nX===cX-2 && nY===cY+6) ||
-        (nX===cX-1 && nY===cY+6) ||
-        (nX===cX && nY===cY+6) ||
-        (nX===cX+1 && nY===cY+6) ||
-        (nX===cX+2 && nY===cY+6) ||
-        (nX===cX+3 && nY===cY+6) ||
-        (nX===cX+4 && nY===cY+6) ||
-        (nX===cX+5 && nY===cY+6)
-      )
-
-      let moveset1=(moves1)
-      let moveset2=(moves1 || moves2)
-      let moveset3=(moves1 || moves2 || moves3)
-      let moveset4=(moves1 || moves2 || moves3 || moves4)
-      let moveset5=(moves1 || moves2 || moves3 || moves4 || moves5)
-      let moveset6=(moves1 || moves2 || moves3 || moves4 || moves5 || moves6)
-
       //reset on select
-      let currentMoveset=moveset3
+      let currentMoveset=movement(3,nX,nY,cX,cY)
 
       if (this.state.currPiece.state.unit.movement===1){
-        currentMoveset=moveset1
+        currentMoveset=movement(1,nX,nY,cX,cY)
       }
       else if (this.state.currPiece.state.unit.movement===2){
-        currentMoveset=moveset2
+        currentMoveset=movement(2,nX,nY,cX,cY)
       }else if (this.state.currPiece.state.unit.movement===3){
-        currentMoveset=moveset3
+        currentMoveset=movement(3,nX,nY,cX,cY)
       }else if (this.state.currPiece.state.unit.movement===4){
-        currentMoveset=moveset4
+        currentMoveset=movement(4,nX,nY,cX,cY)
       }else if (this.state.currPiece.state.unit.movement===5){
-        currentMoveset=moveset5
+        currentMoveset=movement(5,nX,nY,cX,cY)
       }else if (this.state.currPiece.state.unit.movement===6){
-        currentMoveset=moveset6
+        currentMoveset=movement(6,nX,nY,cX,cY)
+      }
+
+      let currentRange=movement(3,nX,nY,cX,cY)
+
+      if (this.state.currPiece.state.unit.range===1){
+        currentRange=movement(1,nX,nY,cX,cY)
+      }
+      else if (this.state.currPiece.state.unit.range===2){
+        currentRange=movement(2,nX,nY,cX,cY)
+      }else if (this.state.currPiece.state.unit.range===3){
+        currentRange=movement(3,nX,nY,cX,cY)
+      }else if (this.state.currPiece.state.unit.range===4){
+        currentRange=movement(4,nX,nY,cX,cY)
+      }else if (this.state.currPiece.state.unit.range===5){
+        currentRange=movement(5,nX,nY,cX,cY)
+      }else if (this.state.currPiece.state.unit.range===6){
+        currentRange=movement(6,nX,nY,cX,cY)
       }
 
       if (this.state.currPiece.state.selected && nextPiece.state.active && nextPiece !== this.state.currPiece){
-        if (moveset1 && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
+        if (currentRange && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
           nextPiece.deselect()
           this.calculateDamage(this.state.currPiece,nextPiece)
           this.state.currPiece.useAttackPhase()
-          this.state.currPiece.deselect()
+          // this.state.currPiece.deselect()
         }else{
           this.state.currPiece.deselect()
         }
@@ -401,9 +210,31 @@ class Board extends Component {
       else if (this.props.store.currentlySelected && currentMoveset && this.state.currPiece.state.movementPhase===1) {
         this.state.currPiece.disable()
         nextPiece.enable(this.props.store.currentlySelected)
+        if (this.state.currPiece.state.armyNumber===1){
+          let oldPieceCoords=this.state.currPiece.props.coordinates
+          let pieceArray=[]
+          let newPieces=this.props.store.player1Pieces.forEach((piece)=>{
+            if (!(piece.props.coordinates===oldPieceCoords)){
+              pieceArray.push(piece)
+            }
+          })
+          pieceArray.push(nextPiece)
+          this.props.dispatch(setNewPieces1(pieceArray))
+        }
+        else if (this.state.currPiece.state.armyNumber===2){
+          let oldPieceCoords=this.state.currPiece.props.coordinates
+          let pieceArray=[]
+          let newPieces=this.props.store.player2Pieces.forEach((piece)=>{
+            if (!(piece.props.coordinates===oldPieceCoords)){
+              pieceArray.push(piece)
+            }
+          })
+          pieceArray.push(nextPiece)
+          this.props.dispatch(setNewPieces2(pieceArray))
+        }
         nextPiece.select()
+        this.setCurrentlySelected(nextPiece)
         nextPiece.useMovementPhase()
-
         this.setState({currPiece: nextPiece})
       }
     }
@@ -421,9 +252,6 @@ class Board extends Component {
 
 //Grab Selected
   setCurrentlySelected=(piece)=>{
-    // this.setState({
-    //   currentlySelected: piece
-    // })
     this.props.dispatch(setCurrentlySelected(piece))
   }
 
@@ -431,19 +259,46 @@ class Board extends Component {
     if (this.props.store.activations<=0){
       this.props.dispatch(incrementRounds())
       this.props.dispatch(resetActivations())
-      this.props.dispatch(switchTurn(1))
     }
+  }
+
+  checkActivations=(pieceArray)=>{
+    let truthArray=pieceArray.map((piece)=>{
+      return piece.state.activated
+    })
+    if (!(truthArray.includes(false))){
+      return true
+    }else{
+      return false
+    }
+  }
+
+  updatePlayerPieces=()=>{
+
+  }
+
+  updatePlayer2Pieces=()=>{
+
   }
 
   handleEndActivation=()=>{
     if (this.props.store.currentlySelected){
+      this.props.store.currentlySelected.activated()
       this.props.dispatch(thunkTest()).then(this.testingThisFunc)
       this.props.store.currentlySelected.deselect()
       if (this.props.store.playerTurn===1){
-        this.props.dispatch(switchTurn(2))
+        if (this.checkActivations(this.props.store.player2Pieces)){
+          this.props.dispatch(switchTurn(1))
+        }else{
+          this.props.dispatch(switchTurn(2))
+        }
       }
       else if (this.props.store.playerTurn===2){
-        this.props.dispatch(switchTurn(1))
+        if (this.checkActivations(this.props.store.player1Pieces)){
+          this.props.dispatch(switchTurn(2))
+        }else{
+          this.props.dispatch(switchTurn(1))
+        }
       }
     }
     else{
