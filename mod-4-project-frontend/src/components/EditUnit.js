@@ -11,10 +11,8 @@ class EditUnit extends Component {
     range:"",
     bs:"",
     as:"",
-    willpower:"",
     armor:"",
     wounds:"",
-    leadership:"",
     points:"",
     army_id:""
   }
@@ -104,17 +102,11 @@ class EditUnit extends Component {
         Ballistic Skill:<br/>
         <input value={this.state.bs} type="text" name="bs"  autoComplete="off" onChange={this.handleChange}/><br/>
 
-        Willpower:<br/>
-        <input value={this.state.willpower} type="text" name="willpower"  autoComplete="off" onChange={this.handleChange}/><br/>
-
         Armor:<br/>
         <input value={this.state.armor} type="text" name="armor"  autoComplete="off" onChange={this.handleChange}/><br/>
 
         Wounds:<br/>
         <input value={this.state.wounds} type="text" name="wounds"  autoComplete="off" onChange={this.handleChange}/><br/>
-
-        Leadership:<br/>
-        <input value={this.state.leadership} type="text" name="leadership"  autoComplete="off" onChange={this.handleChange}/><br/>
 
         Points:<br/>
         <input value={this.state.points} type="text" name="points"  autoComplete="off" onChange={this.handleChange}/><br/>

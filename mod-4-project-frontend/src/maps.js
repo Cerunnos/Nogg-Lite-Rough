@@ -3,7 +3,7 @@
 // }
 
 function maps(name,x,y){
-  if(name==="original"){
+  if(name==="classic"){
     return (x<17 && y>10) || (x>5 && y<3)
   }
   else if(name==="empty"){
@@ -18,6 +18,11 @@ function maps(name,x,y){
     (x>31 && y>4 && x<36 && y<18) ||
     (x>8 && y>=0 && x<36 && y<3) ||
     (x>8 && y>19 && x<36)
+  }
+  else if (name==="columns"){
+    return (
+      (x%2 && y%2)
+    )
   }
 }
 

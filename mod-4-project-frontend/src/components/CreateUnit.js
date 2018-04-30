@@ -11,10 +11,8 @@ class CreateUnit extends Component {
     range:"",
     bs:"",
     as:"",
-    willpower:"",
     armor:"",
     wounds:"",
-    leadership:"",
     points:"",
     army_id:""
   }
@@ -30,13 +28,12 @@ class CreateUnit extends Component {
       range:parseInt(this.state.range,10),
       bs:parseInt(this.state.bs,10),
       as:parseInt(this.state.as,10),
-      willpower:parseInt(this.state.willpower,10),
       armor:parseInt(this.state.armor,10),
       wounds:parseInt(this.state.wounds,10),
-      leadership:parseInt(this.state.leadership,10),
-      points:parseInt(this.state.leadership,10),
+      points:parseInt(this.state.points,10),
       army_id:parseInt(this.state.army_id,10)
     }
+    console.log(newUnit)
 
     this.props.addNewUnit(newUnit)
 
@@ -63,9 +60,7 @@ class CreateUnit extends Component {
       range:"",
       bs:"",
       as:"",
-      willpower:"",
       wounds:"",
-      leadership:"",
       points:"",
       army_id:""
     })
@@ -103,17 +98,11 @@ class CreateUnit extends Component {
         Ballistic Skill:<br/>
         <input value={this.state.bs} type="text" name="bs"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>
 
-        Willpower:<br/>
-        <input value={this.state.willpower} type="text" name="willpower"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>
-
         Armor:<br/>
         <input value={this.state.armor} type="text" name="armor"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>
 
         Wounds:<br/>
         <input value={this.state.wounds} type="text" name="wounds"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>
-
-        Leadership:<br/>
-        <input value={this.state.leadership} type="text" name="leadership"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>
 
         Points:<br/>
         <input value={this.state.points} type="text" name="points"  autoComplete="off" onChange={this.handleChange} className="small"/><br/>

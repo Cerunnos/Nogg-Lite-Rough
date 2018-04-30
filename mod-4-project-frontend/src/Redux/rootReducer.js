@@ -2,6 +2,7 @@
 const defaultState = {
   units:[],
   builds:[],
+  map:"eight",
   buildList:[],
   currentlySelected:null,
   player1Army:[],

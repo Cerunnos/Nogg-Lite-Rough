@@ -42,6 +42,22 @@ class Board extends Component {
     }
   }
 
+  calculateRangedDamage=(piece1,piece2)=>{
+    const roll1=(1+Math.floor(Math.random()*6))
+    const roll2=(1+Math.floor(Math.random()*6))
+    const statline1=piece1.state.unit
+    const statline2=piece2.state.unit
+    const bs=statline1.bs
+    const ar=statline2.armor
+    console.log("Ranged Roll",roll1)
+    if (roll1>=bs){
+      console.log("Defense Roll",roll2)
+      if(roll2<ar){
+        piece2.applyWounds()
+      }
+    }
+  }
+
   //Start Setup Armies 1 and 2
   reduceList1=()=>{
     let counter=0
@@ -154,47 +170,25 @@ class Board extends Component {
       // cNum=[cX,cY]
 
       //reset on select
-      let currentMoveset=movement(3,nX,nY,cX,cY)
+      let currentMoveset=movement(this.state.currPiece.state.unit.movement,nX,nY,cX,cY)
 
-      if (this.state.currPiece.state.unit.movement===1){
-        currentMoveset=movement(1,nX,nY,cX,cY)
-      }
-      else if (this.state.currPiece.state.unit.movement===2){
-        currentMoveset=movement(2,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.movement===3){
-        currentMoveset=movement(3,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.movement===4){
-        currentMoveset=movement(4,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.movement===5){
-        currentMoveset=movement(5,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.movement===6){
-        currentMoveset=movement(6,nX,nY,cX,cY)
-      }
-
-      let currentRange=movement(3,nX,nY,cX,cY)
-
-      if (this.state.currPiece.state.unit.range===1){
-        currentRange=movement(1,nX,nY,cX,cY)
-      }
-      else if (this.state.currPiece.state.unit.range===2){
-        currentRange=movement(2,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.range===3){
-        currentRange=movement(3,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.range===4){
-        currentRange=movement(4,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.range===5){
-        currentRange=movement(5,nX,nY,cX,cY)
-      }else if (this.state.currPiece.state.unit.range===6){
-        currentRange=movement(6,nX,nY,cX,cY)
-      }
+      let currentRange=movement(this.state.currPiece.state.unit.range,nX,nY,cX,cY)
 
       if (this.state.currPiece.state.selected && nextPiece.state.active && nextPiece !== this.state.currPiece){
-        if (currentRange && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
+        if (currentRange && currentRange===movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
           nextPiece.deselect()
           this.calculateDamage(this.state.currPiece,nextPiece)
           this.state.currPiece.useAttackPhase()
-          // this.state.currPiece.deselect()
-        }else{
+          this.state.currPiece.deselect()
+        }
+        else if(currentRange && currentRange !== movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
+          console.log("Hit")
+          nextPiece.deselect()
+          this.calculateRangedDamage(this.state.currPiece,nextPiece)
+          this.state.currPiece.useAttackPhase()
+          this.state.currPiece.deselect()
+        }
+        else{
           this.state.currPiece.deselect()
         }
       }
@@ -208,6 +202,7 @@ class Board extends Component {
         return
       }
       else if (this.props.store.currentlySelected && currentMoveset && this.state.currPiece.state.movementPhase===1) {
+        console.log(currentMoveset)
         this.state.currPiece.disable()
         nextPiece.enable(this.props.store.currentlySelected)
         if (this.state.currPiece.state.armyNumber===1){
@@ -255,7 +250,7 @@ class Board extends Component {
     this.props.dispatch(setCurrentlySelected(piece))
   }
 
-  testingThisFunc=()=>{
+  nextRound=()=>{
     if (this.props.store.activations<=0){
       this.props.dispatch(incrementRounds())
       this.props.dispatch(resetActivations())
@@ -273,18 +268,10 @@ class Board extends Component {
     }
   }
 
-  updatePlayerPieces=()=>{
-
-  }
-
-  updatePlayer2Pieces=()=>{
-
-  }
-
   handleEndActivation=()=>{
     if (this.props.store.currentlySelected){
       this.props.store.currentlySelected.activated()
-      this.props.dispatch(thunkTest()).then(this.testingThisFunc)
+      this.props.dispatch(thunkTest()).then(this.nextRound)
       this.props.store.currentlySelected.deselect()
       if (this.props.store.playerTurn===1){
         if (this.checkActivations(this.props.store.player2Pieces)){
@@ -302,7 +289,7 @@ class Board extends Component {
       }
     }
     else{
-      console.log("No Units Selected")
+
     }
   }
 

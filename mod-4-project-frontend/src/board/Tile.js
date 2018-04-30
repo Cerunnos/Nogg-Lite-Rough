@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Piece from './Piece'
 import './Tile.css'
+import {connect} from 'react-redux'
 
 import maps from '../maps'
 
@@ -11,14 +12,14 @@ class Tile extends Component {
   }
   // (this.props.x<17 && this.props.y>10) || (this.props.x>5 && this.props.y<3)
   renderTerrain=()=>{
-    if(maps("eight",this.props.x,this.props.y)){
-      return <div className="item terrain" id={`${this.props.x},${this.props.y}`} onClick={this.handleClick}></div>
+    if(maps(this.props.store.map,this.props.x,this.props.y)){
+      return <div className="item terrain" id={`${this.props.x},${this.props.y}`}></div>
     }
   }
 
   renderTiles=()=>{
-    if (!(maps("eight",this.props.x,this.props.y))) {
-      return <div className="item" id={`${this.props.x},${this.props.y}`} onClick={this.handleClick}><Piece handleLogic={this.props.handleLogic} coordinates={`${this.props.x},${this.props.y}`}/></div>
+    if (!(maps(this.props.store.map,this.props.x,this.props.y))) {
+      return <div className="item" id={`${this.props.x},${this.props.y}`}><Piece handleLogic={this.props.handleLogic} coordinates={`${this.props.x},${this.props.y}`}/></div>
     }
   }
 
@@ -33,4 +34,9 @@ class Tile extends Component {
   }
 }
 
-export default Tile;
+const mapStateToProps=state=>{
+  return {
+    store: state
+  };
+};
+export default connect(mapStateToProps)(Tile);

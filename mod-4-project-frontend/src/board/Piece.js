@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {setCurrentlySelected,thunkTest,reduceTotalActivations,removeFromPlayer2List,removeFromPlayer1List} from '../Redux/actions'
-
-import './Piece.css'
-
 import {connect} from 'react-redux'
 import movement from '../movement'
+
+import './Piece.css'
 
 class Piece extends Component {
   state={
@@ -145,7 +144,7 @@ class Piece extends Component {
 //What passes for piece graphics...
   pieceIcon=()=>{
     if (this.state.unit===null){
-      if (this.props.store.currentlySelected && this.props.store.currentlySelected.state.movementPhase===1){
+      if (this.props.store.currentlySelected && this.props.store.currentlySelected.state.activated===false){
         let selectedCoordinates=this.props.store.currentlySelected.props.coordinates
         let coordArray=selectedCoordinates.split(",")
         let parsedArray=coordArray.map((element)=>{
@@ -161,13 +160,39 @@ class Piece extends Component {
         let x=selfParsedArray[0]
         let y=selfParsedArray[1]
         let unitMovement=''
-        if (this.props.store.currentlySelected.state.unit)
-        unitMovement=this.props.store.currentlySelected.state.unit.movement
-        if (movement(unitMovement,x,y,sX,sY)){
-          return <div className="highlighted"></div>
+        let unitRange=''
+        if (this.props.store.currentlySelected.state.unit !== null){
+          unitMovement=this.props.store.currentlySelected.state.unit.movement
+          unitRange=this.props.store.currentlySelected.state.unit.range
+          if (this.props.store.currentlySelected.state.movementPhase===1 && this.props.store.currentlySelected.state.attackPhase===1){
+            if (unitMovement>=unitRange){
+              if (movement(unitRange,x,y,sX,sY)){
+                return <div className="rangeHighlight"></div>
+              }
+              if (movement(unitMovement,x,y,sX,sY)){
+                return <div className="highlighted"></div>
+              }
+            }
+            else if (unitRange>=unitMovement){
+              if (movement(unitMovement,x,y,sX,sY)){
+                return <div className="highlighted"></div>
+              }
+              if (movement(unitRange,x,y,sX,sY)){
+                return <div className="rangeHighlight"></div>
+              }
+            }
+          }
+          else if (this.props.store.currentlySelected.state.attackPhase===1){
+            if (movement(unitRange,x,y,sX,sY)){
+              return <div className="rangeHighlight"></div>
+            }
+          }
+          else if (this.props.store.currentlySelected.state.movementPhase===1){
+            if (movement(unitMovement,x,y,sX,sY)){
+              return <div className="highlighted"></div>
+            }
+          }
         }
-
-        // console.log(this.props.coordinates)
       }
     }
     if(this.state.unit !== null){
@@ -231,8 +256,7 @@ class Piece extends Component {
   }
 
   render() {
-    // console.log(this.props.store)
-    if (this.props.store.activations<=0 && (this.state.attackPhase===0 || this.state.movementPhase===0)){
+    if (this.props.store.activations<=0 && this.state.activated===true){
       this.setState({
         movementPhase:1,
         attackPhase:1,
