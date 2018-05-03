@@ -5,6 +5,7 @@ const defaultState = {
   map:"eight",
   buildList:[],
   currentlySelected:null,
+  terrainLocations:[],
   player1Army:[],
   player2Army:[],
   player1List:[],
@@ -14,7 +15,8 @@ const defaultState = {
   round:1,
   activations:0,
   activationsPerRound:0,
-  playerTurn:1
+  playerTurn:1,
+  cardinals:{}
 }
 
 const rootReducer=(state=defaultState,action)=>{
@@ -67,6 +69,12 @@ const rootReducer=(state=defaultState,action)=>{
       return {...state,player1Pieces:action.list}
     case 'SET_NEW_PIECES_2':
       return {...state,player2Pieces:action.list}
+    case 'SET_MAP':
+      return {...state,map:action.map}
+    case 'SET_TERRAIN_LOCATIONS':
+      return {...state,terrainLocations:[...state.terrainLocations,action.coordinates]}
+    case 'SET_CARDINALS':
+      return {...state,cardinals:action.coordinates}
     default:
       return state
   }

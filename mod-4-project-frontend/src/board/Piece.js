@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {setCurrentlySelected,thunkTest,reduceTotalActivations,removeFromPlayer2List,removeFromPlayer1List} from '../Redux/actions'
+import {setCurrentlySelected,thunkTest,reduceTotalActivations,removeFromPlayer2List,removeFromPlayer1List,setTerrainLocations,setCardinals} from '../Redux/actions'
 import {connect} from 'react-redux'
 import movement from '../movement'
+import determineLoS from '../LoS'
+import parseCoordinates from '../parseCoordinates'
 
 import './Piece.css'
 
@@ -14,7 +16,8 @@ class Piece extends Component {
     armyNumber:0,
     movementPhase:1,
     attackPhase:1,
-    activated:false
+    activated:false,
+    terrain:this.props.terrain
 
   }
 
@@ -66,6 +69,8 @@ class Piece extends Component {
 
   select=()=>{
     this.props.dispatch(setCurrentlySelected(this))
+    let currentLoS=determineLoS(this.props.store.terrainLocations,this.props.coordinates)
+    this.props.dispatch(setCardinals(currentLoS))
     this.setState({
       selected:true
     })
@@ -141,60 +146,79 @@ class Piece extends Component {
     })
   }
 
+  componentDidMount(){
+    if (this.state.terrain===true){
+      this.props.dispatch(setTerrainLocations(this.props.coordinates))
+    }
+  }
+
 //What passes for piece graphics...
   pieceIcon=()=>{
     if (this.state.unit===null){
       if (this.props.store.currentlySelected && this.props.store.currentlySelected.state.activated===false){
-        let selectedCoordinates=this.props.store.currentlySelected.props.coordinates
-        let coordArray=selectedCoordinates.split(",")
-        let parsedArray=coordArray.map((element)=>{
-          return parseInt(element,10)
-        })
-        let sX=parsedArray[0]
-        let sY=parsedArray[1]
-
-        let selfCoordArray=this.props.coordinates.split(",")
-        let selfParsedArray=selfCoordArray.map((element)=>{
-          return parseInt(element,10)
-        })
-        let x=selfParsedArray[0]
-        let y=selfParsedArray[1]
+        let currentCoordinates=parseCoordinates(this.props.store.currentlySelected.props.coordinates)
+        let currentX=currentCoordinates[0]
+        let currentY=currentCoordinates[1]
+        let selfCoordinates=parseCoordinates(this.props.coordinates)
+        let selfX=selfCoordinates[0]
+        let selfY=selfCoordinates[1]
         let unitMovement=''
         let unitRange=''
-        if (this.props.store.currentlySelected.state.unit !== null){
+        let cardinals=this.props.store.cardinals
+        let cardinalConstraints=''
+        if (this.props.store.currentlySelected.state.unit !== null && cardinals.north){
+          cardinalConstraints=(
+            (selfY>cardinals.north[1] || cardinals.north.length<1) &&
+            (selfY<cardinals.south[1] || cardinals.south.length<1) &&
+            (selfX<cardinals.east[0] || cardinals.east.length<1) &&
+            (selfX>cardinals.west[0] || cardinals.west.length<1) &&
+            ((selfX<cardinals.northEast[0] || selfY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
+            ((selfX<cardinals.southEast[0] || selfY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
+            ((selfX>cardinals.southWest[0] || selfY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
+            ((selfX>cardinals.northWest[0] || selfY>cardinals.northWest[1]) || cardinals.northWest.length<1)
+          )
+          // if (cardinalConstraints){
+          //   console.log(cardinalConstraints)
+          // }
           unitMovement=this.props.store.currentlySelected.state.unit.movement
           unitRange=this.props.store.currentlySelected.state.unit.range
-          if (this.props.store.currentlySelected.state.movementPhase===1 && this.props.store.currentlySelected.state.attackPhase===1){
-            if (unitMovement>=unitRange){
-              if (movement(unitRange,x,y,sX,sY)){
+          if (this.state.terrain===false){
+            if (this.props.store.currentlySelected.state.movementPhase===1 && this.props.store.currentlySelected.state.attackPhase===1){
+              if (unitMovement>=unitRange){
+                if (movement(unitRange,selfX,selfY,currentX,currentY,cardinalConstraints)){
+                  return <div className="doubleHighlight"></div>
+                }
+                if (movement(unitMovement,selfX,selfY,currentX,currentY)){
+                  return <div className="highlighted"></div>
+                }
+              }
+              else if (unitRange>=unitMovement){
+                if (movement(unitMovement,selfX,selfY,currentX,currentY,cardinalConstraints) && movement(unitMovement,selfX,selfY,currentX,currentY)){
+                  return <div className="doubleHighlight"></div>
+                }
+                if (movement(unitMovement,selfX,selfY,currentX,currentY)){
+                  return <div className="highlighted"></div>
+                }
+                if (movement(unitRange,selfX,selfY,currentX,currentY,cardinalConstraints)){
+                  return <div className="rangeHighlight"></div>
+                }
+              }
+            }
+            else if (this.props.store.currentlySelected.state.attackPhase===1){
+              if (movement(unitRange,selfX,selfY,currentX,currentY,cardinalConstraints)){
                 return <div className="rangeHighlight"></div>
               }
-              if (movement(unitMovement,x,y,sX,sY)){
+            }
+            else if (this.props.store.currentlySelected.state.movementPhase===1){
+              if (movement(unitMovement,selfX,selfY,currentX,currentY,)){
                 return <div className="highlighted"></div>
               }
-            }
-            else if (unitRange>=unitMovement){
-              if (movement(unitMovement,x,y,sX,sY)){
-                return <div className="highlighted"></div>
-              }
-              if (movement(unitRange,x,y,sX,sY)){
-                return <div className="rangeHighlight"></div>
-              }
-            }
-          }
-          else if (this.props.store.currentlySelected.state.attackPhase===1){
-            if (movement(unitRange,x,y,sX,sY)){
-              return <div className="rangeHighlight"></div>
-            }
-          }
-          else if (this.props.store.currentlySelected.state.movementPhase===1){
-            if (movement(unitMovement,x,y,sX,sY)){
-              return <div className="highlighted"></div>
             }
           }
         }
       }
     }
+  //
     if(this.state.unit !== null){
       //Longship Mercs
       if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){

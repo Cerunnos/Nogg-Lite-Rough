@@ -20,13 +20,14 @@
   z-index: -1;
 }
 
-.menuContent{
+/* .menuContent{
   position:fixed;
   top:20%;
-}
+} */
 
 .menuItem{
-  width:112.5%;
+  width:98.5%;
+  /* width:82.5%; */
   border-style:solid;
   border-color:gold;
   background-color:lightblue;

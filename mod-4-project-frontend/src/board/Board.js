@@ -4,10 +4,12 @@ import InfoBar from './InfoBar'
 import BottomBar from './BottomBar'
 import './Board.css'
 import movement from '../movement'
+import determineLoS from '../LoS'
+import parseCoordinates from '../LoS'
 
 import {connect} from 'react-redux'
 import {
-  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2
+  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2,setCardinals
 } from '../Redux/actions'
 
 class Board extends Component {
@@ -70,7 +72,6 @@ class Board extends Component {
         filteredList.push(unit)
       }
     })
-    // console.log(filteredList)
     this.props.dispatch(filterArmy1(filteredList))
     this.props.dispatch(tallyActivations())
     this.props.dispatch(setTotalActivations())
@@ -111,6 +112,7 @@ class Board extends Component {
 
 // Block 1-Logic
   handleLogic = (nextPiece) => {
+    console.log(this.props.store.cardinals)
     let nCoords=nextPiece.props.coordinates
     let nSplit=nCoords.split(',')
     let nX=parseInt(nSplit[0],10)
@@ -171,9 +173,38 @@ class Board extends Component {
 
       //reset on select
       let currentMoveset=movement(this.state.currPiece.state.unit.movement,nX,nY,cX,cY)
-
-      let currentRange=movement(this.state.currPiece.state.unit.range,nX,nY,cX,cY)
-
+      let currentLoS=determineLoS(this.props.store.terrainLocations,this.state.currPiece.props.coordinates)
+      let cardinalConstraints=null
+      if (this.props.store.currentlySelected && this.props.store.currentlySelected.state.activated===false){
+        let currentCoordArray=this.props.store.currentlySelected.props.coordinates.split(",")
+        let currentParsedArray=currentCoordArray.map((element)=>{
+          return parseInt(element,10)
+        })
+        let currentX=currentParsedArray[0]
+        let currentY=currentParsedArray[1]
+        let currentCoordinates=[currentX,currentY]
+        let nextCoordArray=nextPiece.props.coordinates.split(",")
+        let nextParsedArray=nextCoordArray.map((element)=>{
+          return parseInt(element,10)
+        })
+        let nextX=nextParsedArray[0]
+        let nextY=nextParsedArray[1]
+        let nextCoordinates=[nextX,nextY]
+        let cardinals=this.props.store.cardinals
+        if (this.props.store.currentlySelected.state.unit !== null && cardinals.north){
+          cardinalConstraints=(
+            (nextY>cardinals.north[1] || cardinals.north.length<1) &&
+            (nextY<cardinals.south[1] || cardinals.south.length<1) &&
+            (nextX<cardinals.east[0] || cardinals.east.length<1) &&
+            (nextX>cardinals.west[0] || cardinals.west.length<1) &&
+            ((nextX<cardinals.northEast[0] || nextY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
+            ((nextX<cardinals.southEast[0] || nextY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
+            ((nextX>cardinals.southWest[0] || nextY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
+            ((nextX>cardinals.northWest[0] || nextY>cardinals.northWest[1]) || cardinals.northWest.length<1)
+          )
+        }
+      }
+      let currentRange=movement(this.state.currPiece.state.unit.range,nX,nY,cX,cY,cardinalConstraints)
       if (this.state.currPiece.state.selected && nextPiece.state.active && nextPiece !== this.state.currPiece){
         if (currentRange && currentRange===movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
           nextPiece.deselect()
@@ -182,7 +213,6 @@ class Board extends Component {
           this.state.currPiece.deselect()
         }
         else if(currentRange && currentRange !== movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
-          console.log("Hit")
           nextPiece.deselect()
           this.calculateRangedDamage(this.state.currPiece,nextPiece)
           this.state.currPiece.useAttackPhase()
@@ -201,8 +231,7 @@ class Board extends Component {
       else if (nextPiece === this.state.currPiece) {
         return
       }
-      else if (this.props.store.currentlySelected && currentMoveset && this.state.currPiece.state.movementPhase===1) {
-        console.log(currentMoveset)
+      else if (this.props.store.currentlySelected && currentMoveset && this.state.currPiece.state.movementPhase===1 && nextPiece.state.terrain===false) {
         this.state.currPiece.disable()
         nextPiece.enable(this.props.store.currentlySelected)
         if (this.state.currPiece.state.armyNumber===1){
@@ -227,8 +256,8 @@ class Board extends Component {
           pieceArray.push(nextPiece)
           this.props.dispatch(setNewPieces2(pieceArray))
         }
-        nextPiece.select()
-        this.setCurrentlySelected(nextPiece)
+        // nextPiece.select()
+        this.setCurrentlySelected(null)
         nextPiece.useMovementPhase()
         this.setState({currPiece: nextPiece})
       }

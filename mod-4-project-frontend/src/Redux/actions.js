@@ -23,6 +23,9 @@ export const SET_PLAYER_1_PIECES = 'SET_PLAYER_1_PIECES'
 export const SET_PLAYER_2_PIECES = 'SET_PLAYER_2_PIECES'
 export const SET_NEW_PIECES_1 = 'SET_NEW_PIECES_1'
 export const SET_NEW_PIECES_2 = 'SET_NEW_PIECES_2'
+export const SET_MAP = 'SET_MAP'
+export const SET_TERRAIN_LOCATIONS = 'SET_TERRAIN_LOCATIONS'
+export const SET_CARDINALS = 'SET_CARDINALS'
 
 export function addUnits(units){
   return {type: ADD_UNITS, units}
@@ -141,4 +144,16 @@ export function setNewPieces1(list){
 
 export function setNewPieces2(list){
   return {type:SET_NEW_PIECES_2,list}
+}
+
+export function setMap(map){
+  return {type:SET_MAP,map}
+}
+
+export function setTerrainLocations(coordinates){
+  return {type:SET_TERRAIN_LOCATIONS,coordinates}
+}
+
+export function setCardinals(coordinates){
+  return {type:SET_CARDINALS,coordinates}
 }

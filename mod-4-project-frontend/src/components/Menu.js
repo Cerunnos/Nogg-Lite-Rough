@@ -21,11 +21,10 @@ class Menu extends Component {
           <div className="menuItem">
             <Link to='/createUnit'>Create a Unit</Link>
           </div><br/>
-          <h4>View Armylists(View Builds, Almost Done)</h4>
-          <h4>The Grand Coven(Lore and Stuff)</h4>
-          <h4>The Unseen College(Lore and Stuff)</h4>
-          <h4>The Jormungandr Corp.(Lore and Stuff)</h4>
-          <h4>Remember to add Points to units table (Very Important)</h4>
+          <h4 className="menuItem">View Armylists(Currently can only delete)</h4>
+          <h4 className="menuItem">The Grand Coven(Lore and Stuff)</h4>
+          <h4 className="menuItem">The Unseen College(Lore and Stuff)</h4>
+          <h4 className="menuItem">The Jormungandr Corp.(Lore and Stuff)</h4>
         </div>
       </div>
     )

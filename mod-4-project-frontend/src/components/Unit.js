@@ -68,7 +68,7 @@ class Unit extends Component {
         </p>
         <button onClick={this.handleEditClick}>Edit Unit</button>
         <button id={this.props.unit.id} onClick={this.deleteUnit}>Delete Unit</button><br/>
-        <button onClick={this.handleAddClick} value="1">Add To Build 1</button><br/>
+        <button onClick={this.handleAddClick} value="1">Add To Build</button><br/>
         {this.showInfo()}
         {this.showEdit()}
       </div>
