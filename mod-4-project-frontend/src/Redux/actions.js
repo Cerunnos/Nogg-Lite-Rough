@@ -26,6 +26,13 @@ export const SET_NEW_PIECES_2 = 'SET_NEW_PIECES_2'
 export const SET_MAP = 'SET_MAP'
 export const SET_TERRAIN_LOCATIONS = 'SET_TERRAIN_LOCATIONS'
 export const SET_CARDINALS = 'SET_CARDINALS'
+export const CLEAR_ARMY_1 = 'CLEAR_ARMY_1'
+export const CLEAR_ARMY_2 = 'CLEAR_ARMY_2'
+export const CLEAR_PLAYER_1_LIST = 'CLEAR_PLAYER_1_LIST'
+export const CLEAR_PLAYER_2_LIST = 'CLEAR_PLAYER_2_LIST'
+export const TOGGLE_INFO = 'TOGGLE_INFO'
+export const INCREMENT_BOARD_RENDERS = 'INCREMENT_BOARD_RENDERS'
+export const SEND_TO_LOG = 'SEND_TO_LOG'
 
 export function addUnits(units){
   return {type: ADD_UNITS, units}
@@ -59,8 +66,16 @@ export function addToPlayer1Army(unit){
   return {type:SET_ARMY_1, unit}
 }
 
+export function clearPlayer1Army(){
+  return {type:CLEAR_ARMY_1}
+}
+
 export function addToPlayer2Army(unit){
   return {type:SET_ARMY_2, unit}
+}
+
+export function clearPlayer2Army(){
+  return {type:CLEAR_ARMY_2}
 }
 
 export function filterArmy1(filteredArmy){
@@ -110,8 +125,16 @@ export function addToPlayer1List(unit){
   return {type:ADD_TO_PLAYER_1_LIST,unit}
 }
 
+export function clearPlayer1List(){
+  return {type:CLEAR_PLAYER_1_LIST}
+}
+
 export function addToPlayer2List(unit){
   return {type:ADD_TO_PLAYER_2_LIST,unit}
+}
+
+export function clearPlayer2List(){
+  return {type:CLEAR_PLAYER_2_LIST}
 }
 
 export function removeFromPlayer1List(filteredList){
@@ -156,4 +179,16 @@ export function setTerrainLocations(coordinates){
 
 export function setCardinals(coordinates){
   return {type:SET_CARDINALS,coordinates}
+}
+
+export function toggleInfo(){
+  return {type:TOGGLE_INFO}
+}
+
+export function incrementBoardRenders(){
+  return {type:INCREMENT_BOARD_RENDERS}
+}
+
+export function sendToLog(string){
+  return {type:SEND_TO_LOG,string}
 }

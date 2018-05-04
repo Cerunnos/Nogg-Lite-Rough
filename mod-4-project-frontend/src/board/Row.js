@@ -6,7 +6,7 @@ class Row extends Component {
 
   render() {
     let columns=[]
-    for (let i=0;i<46;i++){
+    for (let i=0;i<54;i++){
       columns.push(<Tile x={i} y={this.props.yCoord} handleLogic={this.props.handleLogic} units={this.props.units} key={i}/>)
     }
     return (

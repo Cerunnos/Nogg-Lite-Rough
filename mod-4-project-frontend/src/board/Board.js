@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Row from './Row'
 import InfoBar from './InfoBar'
-import BottomBar from './BottomBar'
+import GlobalStats from './GlobalStats'
 import './Board.css'
 import movement from '../movement'
 import determineLoS from '../LoS'
@@ -9,7 +9,7 @@ import parseCoordinates from '../LoS'
 
 import {connect} from 'react-redux'
 import {
-  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2,setCardinals
+  fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2,setCardinals,toggleInfo,incrementBoardRenders,sendToLog
 } from '../Redux/actions'
 
 class Board extends Component {
@@ -26,6 +26,11 @@ class Board extends Component {
         })
       })
       this.props.dispatch(fetchUnitData('http://localhost:3000/units'))
+      this.props.dispatch(incrementBoardRenders())
+      if (this.props.store.boardRenders===0){
+        window.addEventListener("keydown",this.toggleLog)
+      }
+        window.addEventListener("keyup",this.hotkey)
   }
 
   calculateDamage=(piece1,piece2)=>{
@@ -35,9 +40,9 @@ class Board extends Component {
     const statline2=piece2.state.unit
     const as=statline1.as
     const ar=statline2.armor
-    console.log("Attack Roll",roll1)
+    let logString=`${piece1.state.unit.name},Melee Attack Roll, ${roll1} ---> ${piece2.state.unit.name},Defense Roll, ${roll2}`
+    this.props.dispatch(sendToLog(logString))
     if (roll1>=as){
-      console.log("Defense Roll",roll2)
       if(roll2<ar){
         piece2.applyWounds()
       }
@@ -51,9 +56,9 @@ class Board extends Component {
     const statline2=piece2.state.unit
     const bs=statline1.bs
     const ar=statline2.armor
-    console.log("Ranged Roll",roll1)
+    let logString=`${piece1.state.unit.name},Melee Attack Roll, ${roll1} ---> ${piece2.state.unit.name},Defense Roll, ${roll2}`
+    this.props.dispatch(sendToLog(logString))
     if (roll1>=bs){
-      console.log("Defense Roll",roll2)
       if(roll2<ar){
         piece2.applyWounds()
       }
@@ -112,7 +117,6 @@ class Board extends Component {
 
 // Block 1-Logic
   handleLogic = (nextPiece) => {
-    console.log(this.props.store.cardinals)
     let nCoords=nextPiece.props.coordinates
     let nSplit=nCoords.split(',')
     let nX=parseInt(nSplit[0],10)
@@ -298,6 +302,7 @@ class Board extends Component {
   }
 
   handleEndActivation=()=>{
+    // console.log(this.props.store)
     if (this.props.store.currentlySelected){
       this.props.store.currentlySelected.activated()
       this.props.dispatch(thunkTest()).then(this.nextRound)
@@ -328,8 +333,10 @@ class Board extends Component {
     }
   }
 
-  componentDidMount(){
-    window.addEventListener("keydown",this.hotkey)
+  toggleLog=(e)=>{
+    if (e.keyCode===90){
+      this.props.dispatch(toggleInfo())
+    }
   }
 
   render() {
@@ -344,7 +351,8 @@ class Board extends Component {
             {rows}
           </tbody>
         </table>
-        <InfoBar onSet={this.onSet} currentlySelected={this.state.currentlySelected} playerTurn={this.state.playerTurn} handleEndActivation={this.handleEndActivation}/>
+        <GlobalStats handleEndActivation={this.handleEndActivation}/>
+        <InfoBar handleEndActivation={this.handleEndActivation}/>
       </div>
     );
   }

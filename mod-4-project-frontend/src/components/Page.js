@@ -41,8 +41,6 @@ class Page extends Component {
           units: json,
         })
       })
-      // this.props.dispatch(fetchBuildData('http://localhost:3000/armylists'))
-
   }
 
   addNewUnit = (newUnit) => {

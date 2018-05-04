@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchBuildData,addBuilds,addToPlayer1Army,addToPlayer2Army,fetchUnitData,addToPlayer1List,addToPlayer2List,setPlayer1Activations,setPlayer2Activations,setMap} from '../Redux/actions'
+import {fetchBuildData,addBuilds,addToPlayer1Army,addToPlayer2Army,fetchUnitData,addToPlayer1List,addToPlayer2List,setPlayer1Activations,setPlayer2Activations,setMap,clearPlayer1Army,clearPlayer2Army,clearPlayer1List,clearPlayer2List} from '../Redux/actions'
 
 import Board from '../board/Board'
 
@@ -22,13 +22,14 @@ class Setup extends Component {
     let parseArray=splitString.map((id)=>{
       return parseInt(id,10)
     })
+    this.props.dispatch(clearPlayer1Army())
+    this.props.dispatch(clearPlayer1List())
     parseArray.forEach((id)=>{
       let unitMatch=this.props.store.units.find((unit)=>{
         return unit.id===id
       })
       this.props.dispatch(addToPlayer1Army(unitMatch))
       this.props.dispatch(addToPlayer1List(unitMatch))
-      // this.props.dispatch(setPlayer1Activations(unitMatch))
     })
   }
 
@@ -37,13 +38,14 @@ class Setup extends Component {
     let parseArray=splitString.map((id)=>{
       return parseInt(id,10)
     })
+    this.props.dispatch(clearPlayer2Army())
+    this.props.dispatch(clearPlayer2List())
     parseArray.forEach((id)=>{
       let unitMatch=this.props.store.units.find((unit)=>{
         return unit.id===id
       })
       this.props.dispatch(addToPlayer2Army(unitMatch))
       this.props.dispatch(addToPlayer2List(unitMatch))
-      // this.props.dispatch(setPlayer2Activations(unitMatch))
     })
   }
 

@@ -1,0 +1,6 @@
+.logContainer{
+  position:fixed;
+  overflow: scroll;
+  height:20%;
+  width:40%;
+}

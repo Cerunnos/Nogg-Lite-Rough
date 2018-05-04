@@ -19,6 +19,15 @@ function maps(name,x,y){
     (x>8 && y>=0 && x<36 && y<3) ||
     (x>8 && y>19 && x<36)
   }
+  else if (name==="hulk"){
+    return (
+      (!(51>x && x>2 && 3>y && y>0)) &&
+      (!(51>x && x>2 && 22>y && y>19)) &&
+      (!(53>x && x>50 && 22>y && y>0)) &&
+      (!(3>x && x>0 && 22>y && y>0)) &&
+      (!(3>x && x>0 && 22>y && y>0))
+    )
+  }
   else if (name==="columns"){
     return (
       (x%2 && y%2)

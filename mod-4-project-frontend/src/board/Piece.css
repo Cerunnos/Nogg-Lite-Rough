@@ -11,6 +11,10 @@
   background-color:red;
 }
 
+.activated{
+  opacity:0.2;
+}
+
 .army1{
   background-color:grey;
   opacity:0.8;
@@ -21,9 +25,13 @@
   opacity:0.8;
 }
 
-.army1activated{
+.army1Activated{
   background-color:grey;
-  opacity:0.2;
+  opacity:0.4;
+}
+.army2Activated{
+  background-color:#b37700;
+  opacity:0.4;
 }
 
 .highlighted{
@@ -52,9 +60,3 @@
   opacity:0.5;
   z-index:-3;
 }
-/* .empty{
-  background-image:url("../pictures/oldPaper2.jpg");
-  background-size:100%; */
-  /* width:10px;
-  height:10px; */
-/* } */
