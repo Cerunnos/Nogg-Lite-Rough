@@ -18,7 +18,6 @@ class Setup extends Component {
   }
 
   handlePlayer1Build=(e)=>{
-    console.log(e.target.value)
     let splitString=e.target.value.split(",")
     let parseArray=splitString.map((id)=>{
       return parseInt(id,10)

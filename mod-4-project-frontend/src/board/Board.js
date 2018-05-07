@@ -12,6 +12,8 @@ import {
   fetchUnitData,setCurrentlySelected,addToPlayer1Army,addToPlayer2Army,filterArmy1,filterArmy2,tallyActivations,reduceActivations,incrementRounds, setTotalActivations,resetActivations,thunkTest,switchTurn,setPlayer1Pieces,setPlayer2Pieces,setNewPieces1,setNewPieces2,setCardinals,toggleInfo,incrementBoardRenders,sendToLog
 } from '../Redux/actions'
 
+import anime from 'animejs'
+
 class Board extends Component {
   state={
     currPiece: null
@@ -34,6 +36,20 @@ class Board extends Component {
   }
 
   calculateDamage=(piece1,piece2)=>{
+    let parsedId=piece2.props.coordinates.split(",")
+    let combinedInt=parsedId[0]+parsedId[1]
+    var el = document.getElementById(combinedInt)
+    var right = anime({
+      targets: el,
+      rotate:{
+        value:360,
+        duration:1000,
+        easing:'easeInOutSine'
+      },
+      direction:'alternate'
+    })
+    right
+
     const roll1=(1+Math.floor(Math.random()*6))
     const roll2=(1+Math.floor(Math.random()*6))
     const statline1=piece1.state.unit
@@ -50,6 +66,20 @@ class Board extends Component {
   }
 
   calculateRangedDamage=(piece1,piece2)=>{
+    let parsedId=piece2.props.coordinates.split(",")
+    let combinedInt=parsedId[0]+parsedId[1]
+    var el = document.getElementById(combinedInt)
+    var right = anime({
+      targets: el,
+      rotate:{
+        value:360,
+        duration:1000,
+        easing:'easeInOutSine'
+      },
+      direction:'alternate'
+    })
+    right
+
     const roll1=(1+Math.floor(Math.random()*6))
     const roll2=(1+Math.floor(Math.random()*6))
     const statline1=piece1.state.unit
@@ -169,6 +199,7 @@ class Board extends Component {
 
     //If there is a Current Piece
     else if(this.state.currPiece && this.state.currPiece.state.active===true && this.state.currPiece.state.activated===false){
+
       cCoords.push(this.state.currPiece.props.coordinates)
       cSplit=cCoords[0].split(',')
       cX=parseInt(cSplit[0],10)
@@ -195,18 +226,8 @@ class Board extends Component {
         let nextY=nextParsedArray[1]
         let nextCoordinates=[nextX,nextY]
         let cardinals=this.props.store.cardinals
-        console.log(cardinals)
         if (this.props.store.currentlySelected.state.unit !== null && cardinals.north){
           cardinalConstraints=(
-            // (nextY>cardinals.north[1] || cardinals.north.length<1) &&
-            // (nextY<cardinals.south[1] || cardinals.south.length<1) &&
-            // (nextX<cardinals.east[0] || cardinals.east.length<1) &&
-            // (nextX>cardinals.west[0] || cardinals.west.length<1) &&
-            // ((nextX<cardinals.northEast[0] || nextY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
-            // ((nextX<cardinals.southEast[0] || nextY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
-            // ((nextX>cardinals.southWest[0] || nextY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
-            // ((nextX>cardinals.northWest[0] || nextY>cardinals.northWest[1]) || cardinals.northWest.length<1)
-
             ((nextY>cardinals.north[1] || cardinals.north.length<1) &&
             (nextY<cardinals.south[1] || cardinals.south.length<1) &&
             (nextX<cardinals.east[0] || cardinals.east.length<1) &&

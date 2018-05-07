@@ -6,6 +6,7 @@ import determineLoS from '../LoS'
 import parseCoordinates from '../parseCoordinates'
 
 import './Piece.css'
+import anime from 'animejs'
 
 class Piece extends Component {
   state={
@@ -22,6 +23,17 @@ class Piece extends Component {
   }
 
   handleClick=(e)=>{
+    // console.log(e.target.id)
+    // var right = anime({
+    //   targets:`#${e.target.id}`,
+    //   translateX:10,
+    //   direction:'alternate',
+    //   duration:500,
+    //   easing:'easeInOutQuart'
+    // })
+    // right
+    // console.log(this.props.coordinates)
+    // console.log(e.target)
     this.props.handleLogic(this)
   }
 
@@ -225,22 +237,24 @@ class Piece extends Component {
     }
   //
     if(this.state.unit !== null){
+      let imgId=this.props.coordinates.split(",")
+      let combinedImgId=imgId[0]+imgId[1]
       //Longship Mercs
       if (this.state.activated===true && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
-        return <div className="army1Activated"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="army1Activated" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }
       else if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
-        return <div className="selected"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="selected" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }else if(this.state.active && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===1){
-        return <div className="army1"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="army1" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }
       else if (this.state.activated===true && this.state.unit.name==="Longship Mercs" && this.state.armyNumber===2){
-        return <div className="army2Activated"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="army2Activated" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }
       else if (this.state.active && this.state.selected && this.state.unit.name==="Longship Mercs"){
-        return <div className="selected"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="selected" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }else if(this.state.active && this.state.unit.name==="Longship Mercs"){
-        return <div className="army2"><img src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
+        return <div className="army2" id={combinedImgId}><img id={combinedImgId} src={require("../pictures/longship.png")} alt="ship" width="30" height="30"/></div>
       }
       //Magus
       else if (this.state.activated===true && this.state.unit.name==="Magus" && this.state.armyNumber===1){
@@ -317,8 +331,11 @@ class Piece extends Component {
         activated:false
       })
     }
+    let parsedId=this.props.coordinates.split(",")
+    let combinedInt=parsedId[0]+parsedId[1]
+    let finalId=`piece ${combinedInt}`
     return (
-      <div className="piece" id={this.props.coordinates} onClick={this.handleClick}>
+      <div className={finalId} onClick={this.handleClick}>
       {this.pieceIcon()}
       </div>
     );
