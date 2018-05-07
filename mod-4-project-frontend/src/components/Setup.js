@@ -18,6 +18,7 @@ class Setup extends Component {
   }
 
   handlePlayer1Build=(e)=>{
+    console.log(e.target.value)
     let splitString=e.target.value.split(",")
     let parseArray=splitString.map((id)=>{
       return parseInt(id,10)
@@ -61,6 +62,7 @@ class Setup extends Component {
 
   render() {
     let renderPlayer1Builds=this.props.store.builds.map((build)=>{
+      // console.log(build.unit_ids)
       return <option value={build.unit_ids}>{build.name}</option>
     })
 

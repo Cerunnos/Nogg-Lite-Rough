@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './UnitInfo.css'
+import spells from '../spells'
 
 import {connect} from 'react-redux'
 
@@ -7,6 +8,10 @@ class UnitInfo extends Component {
 
   handleButtonClick=()=>{
     this.props.handleEndActivation()
+  }
+
+  handleSpells=(e)=>{
+    spells(e.target.value)
   }
 
   render(){
@@ -17,6 +22,8 @@ class UnitInfo extends Component {
     let mp=''
     let ap=''
     let activated=''
+    let spells=''
+    let renderSpells=''
     if(this.props.store.currentlySelected){
       currentUnit=this.props.store.currentlySelected.state.unit
       hp=this.props.store.currentlySelected.state.hp
@@ -24,6 +31,10 @@ class UnitInfo extends Component {
       ap=this.props.store.currentlySelected.state.attackPhase
       activated=this.props.store.currentlySelected.state.activated
       statline=<p>M: {currentUnit.movement} BS: {currentUnit.bs} AS: {currentUnit.as} WP: {currentUnit.willpower} AR:{currentUnit.armor}  W: {currentUnit.wounds} LS: {currentUnit.leadership}</p>
+      spells=currentUnit.abilities.split(",")
+      renderSpells=spells.map(spell=>{
+        return <button value={spell} onClick={this.handleSpells}>{spell}</button>
+      })
     }
 
     return (
@@ -35,6 +46,7 @@ class UnitInfo extends Component {
     );
   }
 }
+// {this.props.store.currentlySelected ? renderSpells : null}
 
 const mapStateToProps=state=>{
   return {

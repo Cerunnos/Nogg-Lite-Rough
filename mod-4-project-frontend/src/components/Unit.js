@@ -44,7 +44,6 @@ class Unit extends Component {
   }
 
   handleAddClick=(e)=>{
-    console.log(this.props.store.buildList)
     if (e.target.value==1){
       // this.props.dispatch(addToPlayer1Army(this.props.unit))
       // this.props.dispatch(addToPlayer1List(this.props.unit))

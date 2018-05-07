@@ -38,7 +38,8 @@ function determineLoS(terrainLocations,coordinates){
         }
       }
     }
-    else if (locationX>currentX && locationY<currentY){ //Northeast
+    else if (locationX>currentX && locationY<currentY && (Math.abs(locationX-currentX)===Math.abs(locationY-currentY))){ //Northeast
+      // console.log(locationX,locationY)
       if (cardinals.northEast.length<1){
         cardinals.northEast=locationCoordinates
       }else{
@@ -66,7 +67,7 @@ function determineLoS(terrainLocations,coordinates){
         }
       }
     }
-    else if (locationX>currentX && locationY>currentY){ //Southeast
+    else if (locationX>currentX && locationY>currentY && (Math.abs(locationX-currentX)===Math.abs(locationY-currentY))){ //Southeast
       if (cardinals.southEast.length<1){
         cardinals.southEast=locationCoordinates
       }else{
@@ -74,9 +75,9 @@ function determineLoS(terrainLocations,coordinates){
         let currentSouthEastDistanceY=Math.pow((cardinals.southEast[1]-currentY),2)
         let currentSouthEastDistanceXY=currentSouthEastDistanceX+currentSouthEastDistanceY
         let totalCurrentSouthEastDistance=Math.sqrt(currentSouthEastDistanceXY) //Final
-
         if (totalCurrentLocationDistance<totalCurrentSouthEastDistance){
           cardinals.southEast=locationCoordinates
+          // console.log(cardinals.southEast=locationCoordinates)
         }
       }
     }
@@ -94,7 +95,7 @@ function determineLoS(terrainLocations,coordinates){
         }
       }
     }
-    else if (locationX<currentX && locationY>currentY){ //Southwest
+    else if (locationX<currentX && locationY>currentY && (Math.abs(locationX-currentX)===Math.abs(locationY-currentY))){ //Southwest
       if (cardinals.southWest.length<1){
         cardinals.southWest=locationCoordinates
       }else{
@@ -102,7 +103,6 @@ function determineLoS(terrainLocations,coordinates){
         let currentSouthWestDistanceY=Math.pow((cardinals.southWest[1]-currentY),2)
         let currentSouthWestDistanceXY=currentSouthWestDistanceX+currentSouthWestDistanceY
         let totalCurrentSouthWestDistance=Math.sqrt(currentSouthWestDistanceXY) //Final
-
         if (totalCurrentLocationDistance<totalCurrentSouthWestDistance){
           cardinals.southWest=locationCoordinates
         }
@@ -122,7 +122,7 @@ function determineLoS(terrainLocations,coordinates){
         }
       }
     }
-    else if (locationX<currentX && locationY<currentY){ //Northwest
+    else if (locationX<currentX && locationY<currentY && (Math.abs(locationX-currentX)===Math.abs(locationY-currentY))){ //Northwest
       if (cardinals.northWest.length<1){
         cardinals.northWest=locationCoordinates
       }else{

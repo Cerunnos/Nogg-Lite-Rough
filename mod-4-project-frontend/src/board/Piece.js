@@ -168,15 +168,22 @@ class Piece extends Component {
         let cardinalConstraints=''
         if (this.props.store.currentlySelected.state.unit !== null && cardinals.north){
           cardinalConstraints=(
-            (selfY>cardinals.north[1] || cardinals.north.length<1) &&
+            ((selfY>cardinals.north[1] || cardinals.north.length<1) &&
             (selfY<cardinals.south[1] || cardinals.south.length<1) &&
             (selfX<cardinals.east[0] || cardinals.east.length<1) &&
             (selfX>cardinals.west[0] || cardinals.west.length<1) &&
             ((selfX<cardinals.northEast[0] || selfY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
             ((selfX<cardinals.southEast[0] || selfY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
             ((selfX>cardinals.southWest[0] || selfY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
-            ((selfX>cardinals.northWest[0] || selfY>cardinals.northWest[1]) || cardinals.northWest.length<1)
-            // ((selfX>cardinals.northWest[0] || selfY>cardinals.northWest[1]) || cardinals.northWest.length<1)
+            ((selfX>cardinals.northWest[0] || selfY>cardinals.northWest[1]) || cardinals.northWest.length<1)) ||
+            (selfY<cardinals.west[1] && selfX<=cardinals.west[0] && selfX>cardinals.northWest[0] && selfY>cardinals.northWest[1]) ||
+            (selfY<=cardinals.north[1] && selfX<cardinals.north[0] && selfX>cardinals.northWest[0] && selfY>cardinals.northWest[1]) ||
+            (selfY>cardinals.west[1] && selfX<=cardinals.west[0] && selfX>cardinals.southWest[0] && selfY<cardinals.southWest[1]) ||
+            (selfY>=cardinals.south[1] && selfX<cardinals.south[0] && selfX>cardinals.southWest[0] && selfY<cardinals.southWest[1]) ||
+            (selfY<cardinals.east[1] && selfX>=cardinals.east[0] && selfX<cardinals.northEast[0] && selfY>cardinals.northEast[1]) ||
+            (selfY<=cardinals.north[1] && selfX>=cardinals.north[0] && selfX<cardinals.northEast[0] && selfY>cardinals.northEast[1]) ||
+            (selfY>cardinals.east[1] && selfX>=cardinals.east[0] && selfX<cardinals.southEast[0] && selfY<cardinals.southEast[1]) ||
+            (selfY>=cardinals.south[1] && selfX>=cardinals.south[0] && selfX<cardinals.southEast[0] && selfY<cardinals.southEast[1])
           )
           unitMovement=this.props.store.currentlySelected.state.unit.movement
           unitRange=this.props.store.currentlySelected.state.unit.range

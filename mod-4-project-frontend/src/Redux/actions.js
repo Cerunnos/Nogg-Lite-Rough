@@ -146,6 +146,7 @@ export function removeFromPlayer2List(filteredList){
 }
 
 export function addToBuildList(unit){
+  console.log(unit)
   return {type:ADD_TO_BUILD_LIST,unit}
 }
 

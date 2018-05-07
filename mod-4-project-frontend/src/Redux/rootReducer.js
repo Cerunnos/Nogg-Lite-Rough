@@ -69,6 +69,7 @@ const rootReducer=(state=defaultState,action)=>{
     case 'REMOVE_FROM_PLAYER_2_LIST':
       return {...state,player2List:action.filteredList}
     case 'ADD_TO_BUILD_LIST':
+      console.log(action.unit)
       return {...state,buildList:[...state.buildList,action.unit]}
     case 'CLEAR_BUILD_LIST':
       return {...state,buildList:[]}

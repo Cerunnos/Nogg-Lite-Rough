@@ -195,16 +195,34 @@ class Board extends Component {
         let nextY=nextParsedArray[1]
         let nextCoordinates=[nextX,nextY]
         let cardinals=this.props.store.cardinals
+        console.log(cardinals)
         if (this.props.store.currentlySelected.state.unit !== null && cardinals.north){
           cardinalConstraints=(
-            (nextY>cardinals.north[1] || cardinals.north.length<1) &&
+            // (nextY>cardinals.north[1] || cardinals.north.length<1) &&
+            // (nextY<cardinals.south[1] || cardinals.south.length<1) &&
+            // (nextX<cardinals.east[0] || cardinals.east.length<1) &&
+            // (nextX>cardinals.west[0] || cardinals.west.length<1) &&
+            // ((nextX<cardinals.northEast[0] || nextY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
+            // ((nextX<cardinals.southEast[0] || nextY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
+            // ((nextX>cardinals.southWest[0] || nextY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
+            // ((nextX>cardinals.northWest[0] || nextY>cardinals.northWest[1]) || cardinals.northWest.length<1)
+
+            ((nextY>cardinals.north[1] || cardinals.north.length<1) &&
             (nextY<cardinals.south[1] || cardinals.south.length<1) &&
             (nextX<cardinals.east[0] || cardinals.east.length<1) &&
             (nextX>cardinals.west[0] || cardinals.west.length<1) &&
             ((nextX<cardinals.northEast[0] || nextY>cardinals.northEast[1]) || cardinals.northEast.length<1) &&
             ((nextX<cardinals.southEast[0] || nextY<cardinals.southEast[1]) || cardinals.southEast.length<1) &&
             ((nextX>cardinals.southWest[0] || nextY<cardinals.southWest[1]) || cardinals.southWest.length<1) &&
-            ((nextX>cardinals.northWest[0] || nextY>cardinals.northWest[1]) || cardinals.northWest.length<1)
+            ((nextX>cardinals.northWest[0] || nextY>cardinals.northWest[1]) || cardinals.northWest.length<1)) ||
+            (nextY<cardinals.west[1] && nextX<=cardinals.west[0] && nextX>cardinals.northWest[0] && nextY>cardinals.northWest[1]) ||
+            (nextY<=cardinals.north[1] && nextX<cardinals.north[0] && nextX>cardinals.northWest[0] && nextY>cardinals.northWest[1]) ||
+            (nextY>cardinals.west[1] && nextX<=cardinals.west[0] && nextX>cardinals.southWest[0] && nextY<cardinals.southWest[1]) ||
+            (nextY>=cardinals.south[1] && nextX<cardinals.south[0] && nextX>cardinals.southWest[0] && nextY<cardinals.southWest[1]) ||
+            (nextY<cardinals.east[1] && nextX>=cardinals.east[0] && nextX<cardinals.northEast[0] && nextY>cardinals.northEast[1]) ||
+            (nextY<=cardinals.north[1] && nextX>=cardinals.north[0] && nextX<cardinals.northEast[0] && nextY>cardinals.northEast[1]) ||
+            (nextY>cardinals.east[1] && nextX>=cardinals.east[0] && nextX<cardinals.southEast[0] && nextY<cardinals.southEast[1]) ||
+            (nextY>=cardinals.south[1] && nextX>=cardinals.south[0] && nextX<cardinals.southEast[0] && nextY<cardinals.southEast[1])
           )
         }
       }

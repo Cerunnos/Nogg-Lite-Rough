@@ -18,6 +18,7 @@ class Builder extends Component {
     this.props.store.buildList.forEach(unit=>{
       unitIdArray.push(unit.id)
     })
+    console.log(unitIdArray)
     let joinedArray=unitIdArray.join()
     let splitString=joinedArray.split(",")
 
