@@ -79,13 +79,14 @@ class Setup extends Component {
         <select onChange={this.handlePlayer2Build}>
           {renderPlayer2Builds}
         </select><br/><br/>
-        <h3>Choose Map</h3>
-        <input type="text" onChange={this.handleChange} autoComplete="off"/><br/><br/>
         <Link to='board' onClick={this.handleClick}>Start Game</Link><br/><br/>
       </div>
     )
   }
 }
+
+// <h3>Choose Map</h3>
+// <input type="text" onChange={this.handleChange} autoComplete="off"/><br/><br/>
 
 const mapStateToProps=state=>{
   return {

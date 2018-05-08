@@ -14,6 +14,7 @@ class EditUnit extends Component {
     armor:"",
     wounds:"",
     points:"",
+    attacks:"",
     army_id:""
   }
 
@@ -33,6 +34,7 @@ class EditUnit extends Component {
       wounds:parseInt(this.state.wounds,10),
       leadership:parseInt(this.state.leadership,10),
       points:parseInt(this.state.points,10),
+      attacks:parseInt(this.state.attacks,10),
       army_id:parseInt(this.state.army_id,10)
     }
 
@@ -65,6 +67,7 @@ class EditUnit extends Component {
       wounds:"",
       leadership:"",
       points:"",
+      attacks:"",
       army_id:""
     })
     this.props.history.push('/')
@@ -101,6 +104,9 @@ class EditUnit extends Component {
 
         Ballistic Skill:<br/>
         <input value={this.state.bs} type="text" name="bs"  autoComplete="off" onChange={this.handleChange}/><br/>
+
+        Attacks:<br/>
+        <input value={this.state.attacks} type="text" name="attacks"  autoComplete="off" onChange={this.handleChange}/><br/>
 
         Armor:<br/>
         <input value={this.state.armor} type="text" name="armor"  autoComplete="off" onChange={this.handleChange}/><br/>

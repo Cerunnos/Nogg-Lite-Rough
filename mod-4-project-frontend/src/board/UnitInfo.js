@@ -30,7 +30,7 @@ class UnitInfo extends Component {
       mp=this.props.store.currentlySelected.state.movementPhase
       ap=this.props.store.currentlySelected.state.attackPhase
       activated=this.props.store.currentlySelected.state.activated
-      statline=<p>M: {currentUnit.movement} BS: {currentUnit.bs} AS: {currentUnit.as} WP: {currentUnit.willpower} AR:{currentUnit.armor}  W: {currentUnit.wounds} LS: {currentUnit.leadership}</p>
+      statline=<p>M: {currentUnit.movement} BS: {currentUnit.bs} AS: {currentUnit.as} A: {currentUnit.attacks} AR:{currentUnit.armor}  W: {currentUnit.wounds}</p>
       spells=currentUnit.abilities.split(",")
       renderSpells=spells.map(spell=>{
         return <button value={spell} onClick={this.handleSpells}>{spell}</button>
@@ -41,6 +41,7 @@ class UnitInfo extends Component {
       <div className="UnitInfo">
         <h2>{this.props.store.currentlySelected ? this.props.store.currentlySelected.state.unit.name : null}</h2>
         <h2>{this.props.store.currentlySelected ? statline : null}</h2>
+        <h2>{this.props.store.currentlySelected ? `Wounds Left: ${this.props.store.currentlySelected.state.hp}/${this.props.store.currentlySelected.state.unit.wounds} Attacks Left: ${this.props.store.currentlySelected.state.attackPhase}/${this.props.store.currentlySelected.state.totalAttacks}` : null}</h2>
         <h3>{this.props.store.currentlySelected ? this.props.store.currentlySelected.state.unit.description : null}</h3>
       </div>
     );

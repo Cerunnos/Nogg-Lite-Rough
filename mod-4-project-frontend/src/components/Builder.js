@@ -50,7 +50,6 @@ class Builder extends Component {
   }
 
   render() {
-    console.log(this.props.store.buildList)
     const renderArmyComp=this.props.store.buildList.map((unit)=>{
       return <ul key={Math.random()}>{unit.name}</ul>
     })

@@ -43,10 +43,12 @@ class Board extends Component {
       targets: el,
       rotate:{
         value:360,
-        duration:1000,
-        easing:'easeInOutSine'
+        duration:550,
+        easing:'easeInOutQuart'
       },
-      direction:'alternate'
+      direction:'alternate',
+      backgroundColor:'#ff0000',
+      opacity:.5
     })
     right
 
@@ -71,12 +73,14 @@ class Board extends Component {
     var el = document.getElementById(combinedInt)
     var right = anime({
       targets: el,
-      rotate:{
-        value:360,
-        duration:1000,
-        easing:'easeInOutSine'
-      },
-      direction:'alternate'
+      // rotate:{
+      //   value:360,
+      //   duration:550,
+      //   easing:'easeInOutQuart'
+      // },
+      direction:'alternate',
+      backgroundColor:'#ff0000',
+      opacity:.5
     })
     right
 
@@ -249,13 +253,13 @@ class Board extends Component {
       }
       let currentRange=movement(this.state.currPiece.state.unit.range,nX,nY,cX,cY,cardinalConstraints)
       if (this.state.currPiece.state.selected && nextPiece.state.active && nextPiece !== this.state.currPiece){
-        if (currentRange && currentRange===movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
+        if (currentRange && currentRange===movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase>0){
           nextPiece.deselect()
           this.calculateDamage(this.state.currPiece,nextPiece)
           this.state.currPiece.useAttackPhase()
           this.state.currPiece.deselect()
         }
-        else if(currentRange && currentRange !== movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase===1){
+        else if(currentRange && currentRange !== movement(1,nX,nY,cX,cY) && nextPiece.state.armyNumber !== this.state.currPiece.state.armyNumber && this.state.currPiece.state.attackPhase>0){
           nextPiece.deselect()
           this.calculateRangedDamage(this.state.currPiece,nextPiece)
           this.state.currPiece.useAttackPhase()

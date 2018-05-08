@@ -33,6 +33,7 @@ export const CLEAR_PLAYER_2_LIST = 'CLEAR_PLAYER_2_LIST'
 export const TOGGLE_INFO = 'TOGGLE_INFO'
 export const INCREMENT_BOARD_RENDERS = 'INCREMENT_BOARD_RENDERS'
 export const SEND_TO_LOG = 'SEND_TO_LOG'
+export const END_ACTIVATIONS = 'END_ACTIVATIONS'
 
 export function addUnits(units){
   return {type: ADD_UNITS, units}
@@ -192,4 +193,9 @@ export function incrementBoardRenders(){
 
 export function sendToLog(string){
   return {type:SEND_TO_LOG,string}
+}
+
+export function endActivations(){
+  console.log("Hit")
+  return {type:END_ACTIVATIONS}
 }

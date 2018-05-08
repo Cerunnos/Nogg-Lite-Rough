@@ -11,9 +11,8 @@ class ListArmylists extends Component {
     this.props.dispatch(fetchBuildData('http://localhost:3000/armylists'))
   }
   render() {
-    console.log(this.props.store)
     let renderAllBuilds=this.props.store.builds.map((build)=>{
-      return <Armylist build={build}/>
+      return <Armylist build={build} allBuilds={this.props.store.builds} units={this.props.store.units}/>
     })
     return(
       <div className="listarmylists">

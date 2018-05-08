@@ -1,18 +1,26 @@
 .form{
-  position:absolute;
-  top:6%;
-  left:45%;
-  width:10%;
-  /* left:550px; */
-  /* background-color:#cccccc; */
-  background-image: url("../pictures/oldPaper2.jpg");
-  padding:10px;
+  position:fixed;
+  left:40%;
+  width:20%;
+  /* background-image: url("../pictures/oldPaper2.jpg"); */
+  /* padding:10px; */
+  height:100%;
+  text-align:center;
+  border-style:solid;
+  border-color:brown;
 }
 
-/* .large{
-  width:300px;
-  height:50px;
-} */
+.form::after {
+  content: "";
+  opacity: 0.6;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: silver;
+  z-index: -1;
+}
 
 .small{
   width:20px;

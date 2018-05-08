@@ -1,32 +1,37 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {fetchBuildData,addBuilds,fetchUnitData} from '../Redux/actions'
+import ArmylistInfo from './ArmylistInfo'
 
 import './Armylist.css'
 
 
 class Armylist extends Component {
-
-  // componentDidMount(){
-  //   this.props.dispatch(fetchUnitData('http://localhost:3000/units'))
-  //   this.props.dispatch(fetchBuildData('http://localhost:3000/armylists'))
-  // }
-
-  handleClick=(e)=>{
-    e.preventDefault()
-    console.log(this.props.build.id)
-
-    let options = {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
-      }
-      fetch(`http://localhost:3000/armylists/${this.props.build.id}`, options)
-      .then(res=>res.json())
-      .then(json=>console.log(json))
+  state={
+    clicked:false
   }
+
+  handleClick=()=>{
+    this.setState({
+      clicked:!this.state.clicked
+    })
+  }
+
+  // handleClick=(e)=>{
+  //   e.preventDefault()
+  //   console.log(this.props.build.id)
+  //
+  //   let options = {
+  //       method: 'DELETE',
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json"
+  //       }
+  //     }
+  //     fetch(`http://localhost:3000/armylists/${this.props.build.id}`, options)
+  //     .then(res=>res.json())
+  //     .then(json=>console.log(json))
+  // }
 
   // deleteUnit=(e)=>{
   //
@@ -48,9 +53,9 @@ class Armylist extends Component {
 
   render() {
     return(
-      <div className="armylist">
-        {this.props.build.name}
-        <button onClick={this.handleClick}>Delete Build</button>
+      <div className="armylist" onClick={this.handleClick}>
+        <h3>{this.props.build.name}</h3>
+        {this.state.clicked ? <ArmylistInfo build={this.props.build} allBuilds={this.props.allBuilds} units={this.props.units}/> : null}
       </div>
     )
   }

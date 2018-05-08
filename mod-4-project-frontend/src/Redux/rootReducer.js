@@ -93,6 +93,8 @@ const rootReducer=(state=defaultState,action)=>{
       return {...state,boardRenders:state.boardRenders+1}
     case 'SEND_TO_LOG':
       return {...state,log:[...state.log,action.string]}
+    case 'END_ACTIVATIONS':
+      return {...state,activations:0}
     default:
       return state
   }
